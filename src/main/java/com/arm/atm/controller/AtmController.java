@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.arm.atm.component.Atm;
 
-@Repository
 public class AtmController {
 	
 	static class DepositForm {

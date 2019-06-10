@@ -1,4 +1,4 @@
-package com.arm.atm.component;
+package com.arm.atm;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

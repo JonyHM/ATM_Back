@@ -16,5 +16,5 @@ public interface BankRepository {
 	List<Bank> findAll();
 	
 	Bank findOne(Long id);
-
+	
 }
