@@ -93,7 +93,11 @@
 			<version>23.5-jre</version>
 		</dependency>
 		
-		
+		<dependency>
+		    <groupId>org.projectlombok</groupId>
+		    <artifactId>lombok</artifactId>
+		    <scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
