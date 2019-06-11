@@ -1,52 +1,78 @@
 package com.arm.atm.controller;
 
-import static org.springframework.http.HttpStatus.OK;
+import java.net.URI;
+import java.util.List;
 
-import java.util.Optional;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.arm.atm.component.AccountParser;
 import com.arm.atm.entity.Account;
 import com.arm.atm.entity.Bank;
-import com.arm.atm.repository.AccountRepository;
-import com.arm.atm.repository.BankRepository;
+import com.arm.atm.service.AccountServiceImpl;
+import com.arm.atm.service.BankServiceImpl;
 
-@Service
+@RestController
 public class AccountController {
 
-	public AccountRepository accountRepository;
-	
-	private BankRepository bankRepository;
-	
+	@Autowired
+	private AccountServiceImpl accountService;
+	@Autowired
+	private BankServiceImpl bankService;
+	@Autowired
 	private AccountParser accountParser;
 	
-	@RequestMapping(value = "/account", method=RequestMethod.POST)
+	@RequestMapping(value="/account", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Account> createAccount(@RequestBody Account account) {
+	public ResponseEntity<?> createAccount(@RequestBody Account account) {
+		Bank bank = bankService.getBank(account.getBank().getId());
+		Account newAccount = accountParser.parse(account, bank);		
+		Account responseAccount = accountService.create(newAccount);
 		
-		validateAccount(account);
-		
-		Bank bank = bankRepository.findOne(account.getBank().getId());
-		validateBank(bank);
-		Account newAccount = accountParser.parse(account, bank);
-		Account accountDb = accountRepository.save(newAccount);
-		return new ResponseEntity<Account>(accountDb, OK);
-	}
+		URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/account")
+                .buildAndExpand(responseAccount.getId()).toUri();
 
-	private void validateBank(Bank bank) {
-		Optional.ofNullable(bank).orElseThrow(()-> new RuntimeException("Bank does not exist."));
+		return ResponseEntity.created(location).build();		
 	}
-
-	private void validateAccount(Account account) {
-		Account existingAccount = accountRepository.find(account.getId(), account.getNumber());
+	
+	@RequestMapping(value="/accounts", method=RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	public List<Account> listAccounts() {
+		return accountService.getAll();
+	}
+	
+	@RequestMapping(value="/account/{id}", method=RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	public Account findAccount(@PathVariable Long id) {
+		return accountService.getAccount(id);
+	}
+	
+	@RequestMapping(value="/account/{id}", method=RequestMethod.PUT)
+	@ResponseStatus(HttpStatus.CREATED)
+	public ResponseEntity<?> updateAccount(@PathVariable Long id, @RequestBody Account account) {
+		Account responseAccount = accountService.edit(id, account);
 		
-		Optional.ofNullable(existingAccount).orElseThrow(()-> new RuntimeException("Account does not exist."));
+		URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/account/{id}")
+                .buildAndExpand(responseAccount.getId()).toUri();
+
+		return ResponseEntity.created(location).build();	
+	}
+	
+	@RequestMapping(value="/account/{id}", method=RequestMethod.DELETE)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public ResponseEntity<?> deleteAccount(@PathVariable Long id) {
+		accountService.delete(id);
+		
+		return ResponseEntity.noContent().build();
 	}
 }

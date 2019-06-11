@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "number"))
 public class Account {
 
@@ -30,6 +30,8 @@ public class Account {
 	private Long number;
 	
 	private String owner;
+	
+	private String password;
 	
 	private BigDecimal balance;
 	
