@@ -34,6 +34,7 @@ public class AccountController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> createAccount(@RequestBody Account account) {
 		Bank bank = bankService.getBank(account.getBank().getId());
+		
 		Account newAccount = accountParser.parse(account, bank);		
 		Account responseAccount = accountService.create(newAccount);
 		
