@@ -3,20 +3,21 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.arm.atm</groupId>
-	<artifactId>atm-back</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
-
-	<name>atm-back</name>
-	<description>Demo project for Spring Boot</description>
-
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.1.5.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+	
+	<groupId>com.arm.atm</groupId>
+	<artifactId>atm-back</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>atm-back</name>
+	<description>Prova de Backend</description>
+
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -32,6 +33,10 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
 		<dependency>
@@ -54,21 +59,6 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- not spring boot dependencies -->
-		
-		<dependency>
-		    <groupId>org.liquibase</groupId>
-		    <artifactId>liquibase-core</artifactId>
-		</dependency>
-		<dependency>
-		    <groupId>org.liquibase</groupId>
-		    <artifactId>liquibase-maven-plugin</artifactId>
-		    <version>3.4.1</version>
-		</dependency>
-		<dependency>
-		    <groupId>org.liquibase.ext</groupId>
-		    <artifactId>liquibase-hibernate5</artifactId>
-		    <version>3.6</version>
-		</dependency>
 		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -110,16 +100,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			<plugin>
-		        <groupId>org.liquibase</groupId>
-		        <artifactId>liquibase-maven-plugin</artifactId>
-		        <version>3.5.3</version>
-		        <configuration>
-		        	<changeLogFile>src/main/resources/db/changelog/db.changelog-master.xml</changeLogFile>
-		        	<diffChangeLogFile>src/main/resources/db/changelog/db.changelog-diff-${maven.build.timestamp}.xml</diffChangeLogFile>
-		            <propertyFile>src/main/resources/liquibase.properties</propertyFile>
-		        </configuration>                
-		    </plugin>
 		</plugins>
 	</build>
 

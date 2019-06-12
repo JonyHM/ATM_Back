@@ -7,7 +7,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import com.arm.atm.entity.Account;
 import com.arm.atm.repository.AccountRepository;
@@ -30,7 +29,7 @@ public class Atm {
 	}
 
 	private Optional<Account> findAccount(String bank, Long number, String password) {
-		Account account = accountRepository.find(bank, number, password);
+		Account account = accountRepository.findByNumber(number);
 		return Optional.ofNullable(account);
 	} 
 }

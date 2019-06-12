@@ -9,6 +9,7 @@ import com.arm.atm.entity.Account;
 public interface AccountRepository extends JpaRepository<Account, Long>{
 	
 	Account findByOwner(String owner);
+	Account findByNumber(Long number);
 
 //	List<Account> findByNumberAndPassword(Long number, String password);
 //
