@@ -1,6 +1,6 @@
 package com.arm.atm.dto;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,5 +16,5 @@ public class AtmDTO {
 	private String bankName;
 	private Long accountNumber;
 	private String password;
-	private BigInteger value;
+	private BigDecimal value;
 }

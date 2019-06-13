@@ -5,31 +5,26 @@ import static org.springframework.beans.factory.config.ConfigurableBeanFactory.S
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 
 import com.arm.atm.entity.Account;
-import com.arm.atm.repository.AccountRepository;
+import com.arm.atm.service.AccountServiceImpl;
 
 @Scope(SCOPE_PROTOTYPE)
 public class Atm {
 	
 	@Autowired
-	private AccountRepository accountRepository;
+	private AccountServiceImpl accountService;
 	
-	@Autowired
-    private ApplicationContext сontext;
-	
-	public Atm authenticate(String bank, Long number, String password) {
+	public Account authenticate(String bank, Long number, String password) {
 		
-		Account account = findAccount(bank, number, password)
-							.orElseThrow(()-> new RuntimeException("Usuário ou conta inválidos"));
-		
-		return сontext.getBean(Atm.class, account);
+		return findAccount(bank, number, password)
+							.orElseThrow(()-> new RuntimeException("Account number or password are incorrect!"));
 	}
 
 	private Optional<Account> findAccount(String bank, Long number, String password) {
-		Account account = accountRepository.findByNumber(number);
-		return Optional.ofNullable(account);
+		Account existingAccount = accountService.getAccountByNumber(number);
+		
+		return Optional.ofNullable(existingAccount);
 	} 
 }

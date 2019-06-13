@@ -9,6 +9,7 @@ public interface AccountService {
 		Account create(Account account);
 		Account edit(Long id, Account account);
 		Account getAccount(Long id);
+		Account getAccountByNumber(Long accountNumber);
 		Account getAccount(String owner);
 		void delete(Long id);
 		List<Account> getAll(int page, int limit);

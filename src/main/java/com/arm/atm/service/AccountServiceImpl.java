@@ -58,4 +58,9 @@ public class AccountServiceImpl implements AccountService {
 		return repository.saveAndFlush(existingAccount);		
 	}
 
+	@Override
+	public Account getAccountByNumber(Long accountNumber) {
+		return repository.findByNumber(accountNumber);
+	}
+
 }
