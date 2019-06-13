@@ -2,6 +2,8 @@ package com.arm.atm.controller;
 
 import static org.springframework.http.HttpStatus.OK;
 
+import java.math.BigInteger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.arm.atm.component.Atm;
 import com.arm.atm.dto.AccountDTO;
+import com.arm.atm.dto.AtmDTO;
 
 public class AtmController {
 	
@@ -17,7 +20,7 @@ public class AtmController {
 	private Atm atm;
 	
 	@RequestMapping(value = "/deposit", method=RequestMethod.POST)
-	public ResponseEntity<String> deposit(@RequestBody AccountDTO depositForm) {
+	public ResponseEntity<String> deposit(@RequestBody AtmDTO depositForm) {
 		
 		Atm atmSession = atm.authenticate(depositForm.getBankName(), 
 												 depositForm.getAccountNumber(), 
@@ -50,7 +53,7 @@ public class AtmController {
 		return new ResponseEntity<String>("Balance: " + depositForm.getBankName(), OK);
 	}
 	
-	public void deposit(Integer value) {
+	public void deposit(BigInteger value, Long accountNumber) {
 		return;
 	}
 }
