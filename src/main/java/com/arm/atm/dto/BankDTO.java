@@ -11,10 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder(toBuilder = true)
-public class AccountDTO {
-	
-	private String bankName;
-	private Long accountNumber;
-	private String password;
-	private String owner;
+public class BankDTO {
+
+	private String name;
 }
