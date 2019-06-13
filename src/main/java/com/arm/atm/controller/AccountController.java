@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.arm.atm.component.AccountParser;
-import com.arm.atm.dto.AtmDTO;
+import com.arm.atm.dto.AccountDTO;
 import com.arm.atm.entity.Account;
 import com.arm.atm.entity.Bank;
 import com.arm.atm.service.AccountServiceImpl;
@@ -34,7 +34,7 @@ public class AccountController {
 	@RequestMapping(value="/account", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	// Receberá dados do front no molde do AccountDTO, esses dados serão parseados para um novo objeto de account
-	public ResponseEntity<?> createAccount(@RequestBody AtmDTO account) {
+	public ResponseEntity<?> createAccount(@RequestBody AccountDTO account) {
 		Bank bank = bankService.getBank(account.getBankName());
 		Account newAccount = accountParser.parse(account, bank);		
 		Account responseAccount = accountService.create(newAccount);

@@ -11,15 +11,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder(toBuilder = true)
-public class AtmDTO {
+public class AccountDTO {
 	
 	private String bankName;
 	private Long accountNumber;
-	private Integer value;
+	private Integer balance;
 	private String password;
 	private String owner;
 	
-//	public void AtmDTO() {
+//	public void AccountDTO() {
 //		
 //	}
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.arm.atm.component.Atm;
-import com.arm.atm.dto.AtmDTO;
+import com.arm.atm.dto.AccountDTO;
 
 public class AtmController {
 	
@@ -17,7 +17,7 @@ public class AtmController {
 	private Atm atm;
 	
 	@RequestMapping(value = "/deposit", method=RequestMethod.POST)
-	public ResponseEntity<String> deposit(@RequestBody AtmDTO depositForm) {
+	public ResponseEntity<String> deposit(@RequestBody AccountDTO depositForm) {
 		
 		Atm atmSession = atm.authenticate(depositForm.getBankName(), 
 												 depositForm.getAccountNumber(), 
@@ -29,7 +29,7 @@ public class AtmController {
 	}
 	
 	@RequestMapping(value = "/withdraw", method=RequestMethod.POST)
-	public ResponseEntity<String> createBank(@RequestBody AtmDTO depositForm) {
+	public ResponseEntity<String> createBank(@RequestBody AccountDTO depositForm) {
 		
 		Atm atmSession = atm.authenticate(depositForm.getBankName(), 
 												 depositForm.getAccountNumber(), 
@@ -40,7 +40,7 @@ public class AtmController {
 	}
 	
 	@RequestMapping(value = "/balance", method=RequestMethod.POST)
-	public ResponseEntity<String> balance(@RequestBody AtmDTO depositForm) {
+	public ResponseEntity<String> balance(@RequestBody AccountDTO depositForm) {
 		
 		Atm atmSession = atm.authenticate(depositForm.getBankName(), 
 												 depositForm.getAccountNumber(), 
