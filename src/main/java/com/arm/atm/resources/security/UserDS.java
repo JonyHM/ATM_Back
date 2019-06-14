@@ -5,28 +5,31 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class AccountSS implements UserDetails {
+import com.arm.atm.entity.User;
+
+public class UserDS implements UserDetails {
 	
-	public AccountSS() {
-		
+	private static final long serialVersionUID = 578879477375415474L;
+
+	private User user;
+	
+	public UserDS(User user) {
+		this.user = user;
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public String getPassword() {
-		// TODO Auto-generated method stub
-		return null;
+		return user.getPassword();
 	}
 
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
+		return user.getName();
 	}
 
 	@Override

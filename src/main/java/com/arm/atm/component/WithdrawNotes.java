@@ -51,7 +51,7 @@ public class WithdrawNotes {
 	 */
 	private BigDecimal setNoteNumber (BigDecimal amount, Entry<String, BigDecimal> note) {
 		if(amount.compareTo(note.getValue()) >= 0) {
-			notes.setNotes(note.getKey() , amount.divide(note.getValue(), 3, RoundingMode.DOWN));
+			notes.setNotes(note.getKey() , amount.divide(note.getValue(), 2, RoundingMode.DOWN));
 			amount = amount.remainder(note.getValue());
 		}
 		

@@ -2,12 +2,14 @@ package com.arm.atm.component;
 
 import java.math.BigDecimal;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.arm.atm.dto.AccountDTO;
 import com.arm.atm.entity.Account;
 import com.arm.atm.entity.Bank;
+import com.arm.atm.service.UserServiceImpl;
 
 /**
  * Parses the given information into a Account object
@@ -18,6 +20,9 @@ import com.arm.atm.entity.Bank;
 @Scope("prototype")
 public class AccountParser {
 
+	@Autowired
+	private UserServiceImpl userService;
+	
 	/**
 	 * Parses a AccountDTO object and a Bank object into a new Account object
 	 * @param account
@@ -28,7 +33,7 @@ public class AccountParser {
 		Account.AccountBuilder accountBuilder = Account.builder();
 		Account newAccount = accountBuilder
 				.number(account.getAccountNumber())
-				.owner(account.getOwner())
+				.owner(userService.getUser(account.getOwner()))
 				.password(account.getPassword())
 				.balance(new BigDecimal(0))
 				.bank(bank)

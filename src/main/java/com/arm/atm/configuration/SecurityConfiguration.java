@@ -7,13 +7,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @EnableWebSecurity
-public class SecurityConfiguraion extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -22,16 +21,10 @@ public class SecurityConfiguraion extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		http.headers().frameOptions().disable();
 		http.authorizeRequests()
-			.antMatchers("/").permitAll()
+			.antMatchers("/h2-console/**").permitAll()
 			.anyRequest().permitAll()
-		.and()
-    		.formLogin().loginPage("/login")
-    			.defaultSuccessUrl("/balance").permitAll()
-		.and()
-			.logout()
-				.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll()
-				.logoutSuccessUrl("/login")
 		.and()
 			.cors().and().csrf().disable();
 	}
