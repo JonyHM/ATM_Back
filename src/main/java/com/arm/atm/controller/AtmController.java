@@ -36,7 +36,6 @@ public class AtmController {
 	 * @param depositForm with bank name, account number, password and value for deposit
 	 * @return a ResposeEntity with a string informing that the deposit has been executed successfully
 	 */
-	
 	@RequestMapping(value = "/deposit", method=RequestMethod.POST)
 	public ResponseEntity<String> deposit(@RequestBody AtmDTO depositForm) {
 		
@@ -46,7 +45,7 @@ public class AtmController {
 		
 		deposit(depositForm.getValue(), depositForm.getAccountNumber());
 		
-		return new ResponseEntity<String>("Your deposit hsa been successfull", OK);
+		return new ResponseEntity<String>("Your deposit has been successful", OK);
 	}
 	
 	/**
@@ -118,6 +117,11 @@ public class AtmController {
 		return withdrawNotes.withdrawal(value);
 	}
 	
+	/**
+	 * Method to build a string with the number of each note that will be returned to the user
+	 * @param notes
+	 * @return
+	 */
 	private String notesNumber(NotesDTO notes) {
 		StringBuilder builder = new StringBuilder();
 		

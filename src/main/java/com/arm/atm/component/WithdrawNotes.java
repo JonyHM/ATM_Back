@@ -10,6 +10,11 @@ import org.springframework.stereotype.Component;
 
 import com.arm.atm.dto.NotesDTO;
 
+/**
+ * Class designed to calculate the number of each note that will be returned to the user 
+ * @author jonathasmoraes
+ *
+ */
 @Component
 public class WithdrawNotes {
 

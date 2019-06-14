@@ -32,11 +32,10 @@ public class AccountController {
 	private AccountParser accountParser;
 	
 	/**
-	 * 
+	 * Method to create a new Account with the information given by a form, in frontend, and store it into de database
 	 * @param account
-	 * @return
-	 */
-	
+	 * @return A message of success for the creation of the new account object
+	 */	
 	@RequestMapping(value="/account", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> createAccount(@RequestBody AccountDTO account) {
@@ -51,18 +50,33 @@ public class AccountController {
 		return ResponseEntity.created(location).build();		
 	}
 	
+	/**
+	 * 
+	 * @return A list of all accounts stored within the database
+	 */
 	@RequestMapping(value="/accounts", method=RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	public List<Account> listAccounts() {
 		return accountService.getAll();
 	}
 	
+	/**
+	 * Gives the details from certain account 
+	 * @param id
+	 * @return The details of a certain account by its given ID
+	 */
 	@RequestMapping(value="/account/{id}", method=RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	public Account findAccount(@PathVariable Long id) {
 		return accountService.getAccount(id);
 	}
 	
+	/**
+	 * Updates an account by its given ID
+	 * @param id
+	 * @param account
+	 * @return An message informing the successful update of the account
+	 */
 	@RequestMapping(value="/account/{id}", method=RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> updateAccount(@PathVariable Long id, @RequestBody Account account) {
@@ -75,6 +89,11 @@ public class AccountController {
 		return ResponseEntity.created(location).build();	
 	}
 	
+	/**
+	 * Deletes the account by its given ID
+	 * @param id
+	 * @return An message informing the successful deletion of the account
+	 */
 	@RequestMapping(value="/account/{id}", method=RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<?> deleteAccount(@PathVariable Long id) {
