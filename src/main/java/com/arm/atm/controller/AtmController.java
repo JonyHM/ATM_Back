@@ -3,9 +3,11 @@ package com.arm.atm.controller;
 import static org.springframework.http.HttpStatus.OK;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,7 +46,7 @@ public class AtmController {
 		
 		deposit(depositForm.getValue(), depositForm.getAccountNumber());
 		
-		return new ResponseEntity<String>("Deposit successfull", OK);
+		return new ResponseEntity<String>("Your deposit hsa been successfull", OK);
 	}
 	
 	/**
@@ -60,10 +62,11 @@ public class AtmController {
 //		Atm atmSession = atm.authenticate(depositForm.getBankName(), 
 //												 depositForm.getAccountNumber(), 
 //												 depositForm.getPassword());
-		withdraw(withdrawForm.getValue(), withdrawForm.getAccountNumber());
+		NotesDTO notesNumberObject = withdraw(withdrawForm.getValue().setScale(2, RoundingMode.HALF_EVEN), withdrawForm.getAccountNumber());
 		
-		// Criar método no withdrawNotes para montar uma string com o número de notas a serem sacadas
-		return new ResponseEntity<String>("Withdraw successfull:", OK);
+		String notesNumber = notesNumber(notesNumberObject);
+
+		return new ResponseEntity<String>("Requested value has been withdrawn successfully \n\nNotes:\n" + notesNumber, OK);
 	}
 	
 	/**
@@ -71,34 +74,69 @@ public class AtmController {
 	 * @param accountNumber
 	 * @return a new ResponseEntity carrying the total balance
 	 */
-	@RequestMapping(value = "/balance", method=RequestMethod.POST)
-	public ResponseEntity<String> balance(@RequestBody Long accountNumber) {
+	@RequestMapping(value = "/balance/{id}", method=RequestMethod.GET)
+	public ResponseEntity<String> balance(@PathVariable Long id) {
 		
 //		Atm atmSession = atm.authenticate(depositForm.getBankName(), 
 //												 depositForm.getAccountNumber(), 
 //												 depositForm.getPassword());
 		
-		Account account = accountService.getAccountByNumber(accountNumber);
+		Account account = accountService.getAccount(id);
 		
 		return new ResponseEntity<String>("Balance: " + account.getBalance(), OK);
 	}
 	
-	public void deposit(BigDecimal value, Long accountNumber) {
+	/**
+	 * Method for account deposits. It sets the balance for the account and edit it on the Database.
+	 * @param value
+	 * @param accountNumber
+	 */
+	private void deposit(BigDecimal value, Long accountNumber) {
 		Account account = accountService.getAccountByNumber(accountNumber);
 		
 		account.setBalance(account.getBalance().add(value));
 		accountService.edit(account.getId(), account);
 	}
 	
-	public NotesDTO withdraw(BigDecimal value, Long accountNumber) throws Exception {
+	/**
+	 * Method for account withdrawal. It sets the balance for the account and edit it on the Database.
+	 * @param value
+	 * @param accountNumber
+	 * @return a NotesDTO object, which contains the number of each available note on the ATM, according to the given value.
+	 * @throws Exception
+	 */
+	private NotesDTO withdraw(BigDecimal value, Long accountNumber) throws Exception {
 		Account account = accountService.getAccountByNumber(accountNumber);
 		
 		if(value.compareTo(account.getBalance()) > 0) {
 			throw new RuntimeException("Insufficient balance for withdrawal");
 		} else {
 			account.setBalance(account.getBalance().subtract(value));
+			accountService.edit(account.getId(), account);
 		}
 		
 		return withdrawNotes.withdrawal(value);
+	}
+	
+	private String notesNumber(NotesDTO notes) {
+		StringBuilder builder = new StringBuilder();
+		
+		if(notes.getHundred() > 0) {
+			builder.append("Hundred: " + notes.getHundred() + "\n");
+		}
+		
+		if(notes.getFifty() > 0) {
+			builder.append("Fifty: " + notes.getFifty() + "\n");
+		} 
+		
+		if(notes.getTwenty() > 0) {
+			builder.append("Twenty: " + notes.getTwenty() + "\n");
+		} 
+		
+		if(notes.getTen() > 0) {
+			builder.append("Ten: " + notes.getTen() + "\n");
+		}
+		
+		return builder.toString();
 	}
 }

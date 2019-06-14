@@ -6,13 +6,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.arm.atm.dto.NotesDTO;
 
+@Component
 public class WithdrawNotes {
 
-	@Autowired
 	private NotesDTO notes;
 	
 	private Map<String, BigDecimal> notesMap;
@@ -20,6 +20,7 @@ public class WithdrawNotes {
 	public WithdrawNotes() {
 		this.notesMap = new HashMap<>();
 		this.notesMap = getMapa();
+		this.notes = new NotesDTO();
 	}
 	
 	/**
