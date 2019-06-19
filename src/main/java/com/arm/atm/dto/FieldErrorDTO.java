@@ -7,9 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class LoginDTO {
-	
-	private Long accountNumber;
-	private String password;
-	private String userName;
+public class FieldErrorDTO {
+
+	private String field;
+	private String message;
 }

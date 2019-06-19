@@ -1,7 +1,6 @@
 package com.arm.atm.form;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,8 +11,8 @@ import lombok.NoArgsConstructor;
 @Data
 public class UserForm {
 	
-	@NotNull @NotEmpty
+	@NotEmpty
 	private String name;
-	@NotNull @NotEmpty
+	@NotEmpty
 	private String password;
 }

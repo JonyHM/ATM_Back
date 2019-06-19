@@ -1,6 +1,7 @@
 package com.arm.atm.component;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.arm.atm.entity.Account;
 import com.arm.atm.entity.Bank;
+import com.arm.atm.entity.User;
 import com.arm.atm.form.AccountForm;
 import com.arm.atm.service.UserServiceImpl;
 
@@ -29,15 +31,22 @@ public class AccountParser {
 	 * @param bank
 	 * @return a new Account object for storage on Database
 	 */
-	public Account parse(AccountForm account, Bank bank) {
+	public Optional<?> parse(AccountForm account, Bank bank) {
 		Account.AccountBuilder accountBuilder = Account.builder();
-		return accountBuilder
+		
+		Object response = userService.getUser(account.getOwner()).get();
+		
+		if(response instanceof String) {
+			Optional.of(response);
+		}
+		
+		return Optional.of(accountBuilder
 				.number(account.getAccountNumber())
-				.owner(userService.getUser(account.getOwner()))
+				.owner((User) response)
 				.password(account.getPassword())
 				.balance(new BigDecimal(0))
 				.bank(bank)
-				.build();
+				.build());
 	}
 
 }

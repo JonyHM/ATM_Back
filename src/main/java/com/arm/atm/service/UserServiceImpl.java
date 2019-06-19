@@ -1,8 +1,8 @@
 package com.arm.atm.service;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -22,25 +22,53 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void edit(Long id, User user) {
-		User existingUser = repository.getOne(id);
-		BeanUtils.copyProperties(existingUser, user);
-		repository.saveAndFlush(existingUser);
+	public Optional<?> edit(Long id, User user) {
+		Optional<User> optional = repository.findById(id);
+		
+		if(!optional.isPresent()) {
+			return Optional.of("User with ID: " + id + " does not exist.");
+		}
+		
+		User existingUser = optional.get();
+		
+		existingUser.setName(user.getName());
+		existingUser.setPassword(user.getPassword());
+
+		return optional;
 	}
 
 	@Override
-	public User getUser(Long id) {
-		return repository.getOne(id);
+	public Optional<?> getUser(Long id) {
+		Optional<User> optional = repository.findById(id);
+		
+		if(optional.isPresent()) {
+			return optional; 
+		}
+		
+		return Optional.of("User with ID: " + id + " does not exist.");
 	}
 
 	@Override
-	public User getUser(String name) {
-		return repository.findByName(name);
+	public Optional<?> getUser(String name) {
+		Optional<User> optional = repository.findByName(name);
+		
+		if(optional.isPresent()) {
+			return optional;
+		}
+		
+		return Optional.of("User " + name + " does not exist."); 
 	}
 
 	@Override
-	public void delete(Long id) {
-		repository.deleteById(id);
+	public Optional<?> delete(Long id) {
+		Optional<User> optional = repository.findById(id);
+		
+		if(optional.isPresent()) {
+			repository.deleteById(id);
+			return optional;
+		}
+		
+		return Optional.of("User with ID: " + id + " does not exist.");
 	}
 
 	@Override

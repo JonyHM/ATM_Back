@@ -1,8 +1,8 @@
 package com.arm.atm.service;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -22,18 +22,36 @@ public class BankServiceImpl implements BankService {
 	}
 
 	@Override
-	public Bank getBank(Long id) {
-		return repository.getOne(id);
+	public Optional<?> getBank(Long id) {
+		Optional<Bank> bank = repository.findById(id);
+		
+		if(bank.isPresent()) {
+			return bank;
+		}
+		
+		return Optional.of("Bank with ID: " + id + " does not exist.");
 	}
 
 	@Override
-	public Bank getBank(String name) {
-		return repository.findByName(name);
+	public Optional<?> getBank(String name) {
+		Optional<Bank> bank = repository.findByName(name);
+		
+		if(bank.isPresent()) {			
+			return bank; 
+		}
+		return Optional.of("Bank " + name + " does not exist.");
 	}
 
 	@Override
-	public void delete(Long id) {
-		repository.deleteById(id);
+	public Optional<?> delete(Long id) {
+		Optional<Bank> optional = repository.findById(id);
+		
+		if(optional.isPresent()) {
+			repository.deleteById(id);
+			return optional;
+		}
+		
+		return Optional.of("Bank with ID: " + id + " does not exist.");
 	}
 
 	@Override
@@ -52,10 +70,18 @@ public class BankServiceImpl implements BankService {
 	}
 
 	@Override
-	public void edit(Long id, Bank bank) {
-		Bank existingBank = repository.getOne(id);
-		BeanUtils.copyProperties(existingBank, bank);
-		repository.saveAndFlush(existingBank);		
+	public Optional<?> edit(Long id, Bank bank) {		
+		Optional<Bank> optional = repository.findById(id);
+		
+		if(!optional.isPresent()) {
+			return Optional.of("Bank with ID: " + id + " does not exist.");
+		}
+		
+		Bank existingBank = optional.get();
+		
+		existingBank.setName(bank.getName());
+
+		return optional;
 	}
 
 }

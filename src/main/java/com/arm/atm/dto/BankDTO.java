@@ -4,22 +4,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import com.arm.atm.entity.Bank;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 public class BankDTO {
 	
-	@NotNull @NotEmpty
+	@NotEmpty
 	private String name;
 	
 	public BankDTO(Bank bank) {

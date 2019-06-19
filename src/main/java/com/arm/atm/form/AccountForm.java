@@ -3,8 +3,6 @@ package com.arm.atm.form;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.Length;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,13 +12,13 @@ import lombok.NoArgsConstructor;
 @Data
 public class AccountForm {
 	
-	@NotNull @NotEmpty
+	@NotEmpty
 	private String bankName;
-	@NotNull @NotEmpty @Length(max = 6) @Length(min = 6)
+	@NotNull
 	private Long accountNumber;
-	@NotNull @NotEmpty
+	@NotEmpty
 	private String password;
-	@NotNull @NotEmpty
+	@NotEmpty
 	private String owner;
 	
 }

@@ -6,14 +6,12 @@ import java.util.stream.Collectors;
 import com.arm.atm.entity.User;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 public class UserDTO {
 
 	private String name;

@@ -3,6 +3,7 @@ package com.arm.atm.controller;
 import java.net.URI;
 import java.util.List;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -34,7 +34,7 @@ public class BankController {
 	private BankParser bankParser;
 	
 	@PostMapping()
-	@ResponseStatus(HttpStatus.CREATED)
+	@Transactional
 	public ResponseEntity<?> createBank(@RequestBody @Valid BankDTO bankForm) {
 		Bank bank = bankParser.parse(bankForm);
 		bankService.create(bank);
@@ -47,21 +47,31 @@ public class BankController {
 	}
 
 	@GetMapping()
-	@ResponseStatus(HttpStatus.OK)
-	public List<BankDTO> listBanks() {
-		return BankDTO.parse(bankService.getAll());
+	public ResponseEntity<List<BankDTO>> listBanks() {
+		return ResponseEntity.ok(BankDTO.parse(bankService.getAll()));
 	}
 	
 	@GetMapping("/{id}")
-	@ResponseStatus(HttpStatus.OK)
-	public BankDTO findBank(@PathVariable Long id) {
-		return BankDTO.parse(bankService.getBank(id));
+	public ResponseEntity<?> findBank(@PathVariable Long id) {
+		Object response = bankService.getBank(id).get();
+		
+		if(response instanceof String) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		}
+		
+		return ResponseEntity.ok(BankDTO.parse((Bank) response));
 	}
 	
 	@PutMapping("/{id}")
+	@Transactional
 	public ResponseEntity<?> updateBank(@PathVariable Long id, @RequestBody @Valid BankDTO bankForm) {
 		Bank bank = bankParser.parse(bankForm);
-		bankService.edit(id, bank);
+		
+		Object response = bankService.edit(id, bank).get();
+		
+		if(response instanceof String) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		}
 		
 		URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/bank")
@@ -71,9 +81,12 @@ public class BankController {
 	}
 	
 	@DeleteMapping("/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<?> deleteBank(@PathVariable Long id) {
-		bankService.delete(id);
+		Object response = bankService.delete(id).get();
+		
+		if(response instanceof String) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		}
 		
 		return ResponseEntity.noContent().build();
 	}

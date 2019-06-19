@@ -1,14 +1,16 @@
 package com.arm.atm.service;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.arm.atm.entity.Account;
 import com.arm.atm.repository.AccountRepository;
+
+import javassist.NotFoundException;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -22,8 +24,14 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public Account getAccount(Long id) {
-		return repository.getOne(id);
+	public Optional<?> getAccount(Long id) {
+		Optional<Account> optional = repository.findById(id);
+		
+		if(optional.isPresent()) {			
+			return optional;
+		}
+		
+		return Optional.of("Account with ID: " + id + " does not exist.");
 	}
 
 	@Override
@@ -32,8 +40,15 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public void delete(Long id) {
-		repository.deleteById(id);;
+	public Optional<?> delete(Long id) {
+		Optional<Account> optional = repository.findById(id);
+		
+		if(optional.isPresent()) {
+			repository.deleteById(id);
+			return optional;
+		}
+		
+		return Optional.of("Account with ID: " + id + " does not exist.");
 	}
 
 	@Override
@@ -52,10 +67,21 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public void edit(Long id, Account account) {
-		Account existingAccount = repository.getOne(id);
-		BeanUtils.copyProperties(existingAccount, account);
-		repository.saveAndFlush(existingAccount);		
+	public Optional<?> edit(Long id, Account account) throws NotFoundException {
+		Optional<Account> optional = repository.findById(id);
+		
+		if(!optional.isPresent()) {			
+			return Optional.of("Account with ID: " + id + " does not exist.");
+		}
+		
+		Account existingAccount = optional.get();
+		
+		existingAccount.setBank(account.getBank());
+		existingAccount.setPassword(account.getPassword());
+		existingAccount.setOwner(account.getOwner());
+		
+		
+		return optional;
 	}
 
 	@Override

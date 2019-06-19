@@ -6,22 +6,20 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 public class AtmDTO {
 	
-	@NotNull @NotEmpty
+	@NotEmpty
 	private String bankName;
-	@NotNull @NotEmpty
+	@NotNull
 	private Long accountNumber;
-	@NotNull @NotEmpty
+	@NotEmpty
 	private String password;
-	@NotNull @NotEmpty
+	@NotNull
 	private BigDecimal value;
 }

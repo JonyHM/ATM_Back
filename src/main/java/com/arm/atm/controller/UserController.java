@@ -3,6 +3,7 @@ package com.arm.atm.controller;
 import java.net.URI;
 import java.util.List;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -35,7 +35,7 @@ public class UserController {
 	private UserParser userparser;
 	
 	@PostMapping()
-	@ResponseStatus(HttpStatus.CREATED)
+	@Transactional
 	public ResponseEntity<?> createAccount(@RequestBody @Valid UserForm user) {
 		User newUser = userparser.parse(user);		
 		userService.create(newUser);
@@ -48,22 +48,30 @@ public class UserController {
 	}
 	
 	@GetMapping()
-	@ResponseStatus(HttpStatus.OK)
-	public List<UserDTO> listAccounts() {
-		return UserDTO.parse(userService.getAll());
+	public ResponseEntity<List<UserDTO>> listAccounts() {
+		return ResponseEntity.ok(UserDTO.parse(userService.getAll()));
 	}
 	
 	@GetMapping("/{id}")
-	@ResponseStatus(HttpStatus.OK)
-	public UserDTO findAccount(@PathVariable Long id) {
-		return UserDTO.parse(userService.getUser(id));
+	public ResponseEntity<?> findAccount(@PathVariable Long id) {
+		Object response = userService.getUser(id).get();
+		
+		if(response instanceof String) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		}
+		
+		return ResponseEntity.ok(UserDTO.parse((User) response));
 	}
 	
 	@PutMapping("/{id}")
-	@ResponseStatus(HttpStatus.CREATED)
+	@Transactional
 	public ResponseEntity<?> updateAccount(@PathVariable Long id, @RequestBody @Valid UserForm user) {
 		User newUser = userparser.parse(user);	
-		userService.edit(id, newUser);
+		Object response = userService.edit(id, newUser).get();
+		
+		if(response instanceof String) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		}
 		
 		URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/user/{id}")
@@ -73,9 +81,13 @@ public class UserController {
 	}
 	
 	@DeleteMapping("/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@Transactional
 	public ResponseEntity<?> deleteAccount(@PathVariable Long id) {
-		userService.delete(id);
+		Object response = userService.delete(id).get();
+		
+		if(response instanceof String) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		}
 		
 		return ResponseEntity.noContent().build();
 	}

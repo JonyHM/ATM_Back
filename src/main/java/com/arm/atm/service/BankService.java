@@ -1,16 +1,17 @@
 package com.arm.atm.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.arm.atm.entity.Bank;
 
 public interface BankService {
 
 	void create(Bank bank);
-	void edit(Long id, Bank bank);
-	Bank getBank(Long id);
-	Bank getBank(String name);
-	void delete(Long id);
+	Optional<?> edit(Long id, Bank bank);
+	Optional<?> getBank(Long id);
+	Optional<?> getBank(String name);
+	Optional<?> delete(Long id);
 	List<Bank> getAll(int page, int limit);
 	List<Bank> getAll();
 	Long count();

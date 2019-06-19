@@ -5,7 +5,10 @@ import static org.springframework.http.HttpStatus.OK;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,11 +22,10 @@ import com.arm.atm.dto.NotesDTO;
 import com.arm.atm.entity.Account;
 import com.arm.atm.service.AccountServiceImpl;
 
+import javassist.NotFoundException;
+
 @RestController
 public class AtmController {
-	
-//	@Autowired
-//	private Atm atm;
 	
 	@Autowired
 	private AccountServiceImpl accountService;
@@ -35,13 +37,11 @@ public class AtmController {
 	 * Deposits the desirable amount of cash under your account
 	 * @param depositForm with bank name, account number, password and value for deposit
 	 * @return a ResposeEntity with a string informing that the deposit has been executed successfully
+	 * @throws NotFoundException 
 	 */
 	@RequestMapping(value = "/deposit", method=RequestMethod.POST)
-	public ResponseEntity<String> deposit(@RequestBody AtmDTO depositForm) {
-		
-//		Account atmSession = atm.authenticate(depositForm.getBankName(), 
-//												 depositForm.getAccountNumber(), 
-//												 depositForm.getPassword());
+	@Transactional
+	public ResponseEntity<String> deposit(@RequestBody AtmDTO depositForm) throws NotFoundException {
 		
 		deposit(depositForm.getValue(), depositForm.getAccountNumber());
 		
@@ -58,9 +58,6 @@ public class AtmController {
 	@RequestMapping(value = "/withdraw", method=RequestMethod.POST)
 	public ResponseEntity<String> withdraw(@RequestBody AtmDTO withdrawForm) throws Exception {
 		
-//		Atm atmSession = atm.authenticate(depositForm.getBankName(), 
-//												 depositForm.getAccountNumber(), 
-//												 depositForm.getPassword());
 		NotesDTO notesNumberObject = withdraw(withdrawForm.getValue().setScale(2, RoundingMode.HALF_EVEN), withdrawForm.getAccountNumber());
 		
 		String notesNumber = notesNumber(notesNumberObject);
@@ -74,27 +71,35 @@ public class AtmController {
 	 * @return a new ResponseEntity carrying the total balance
 	 */
 	@RequestMapping(value = "/balance/{id}", method=RequestMethod.GET)
-	public ResponseEntity<String> balance(@PathVariable Long id) {
+	public ResponseEntity<?> balance(@PathVariable Long id) {
 		
-//		Atm atmSession = atm.authenticate(depositForm.getBankName(), 
-//												 depositForm.getAccountNumber(), 
-//												 depositForm.getPassword());
+		Object response = accountService.getAccount(id).get();
 		
-		Account account = accountService.getAccount(id);
+		if(response instanceof String) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		}
 		
-		return new ResponseEntity<String>("Balance: " + account.getBalance(), OK);
+		return new ResponseEntity<String>("Balance: " + ((Account) response).getBalance(), OK);
 	}
 	
 	/**
 	 * Method for account deposits. It sets the balance for the account and edit it on the Database.
 	 * @param value
 	 * @param accountNumber
+	 * @throws NotFoundException 
 	 */
-	private void deposit(BigDecimal value, Long accountNumber) {
+	private ResponseEntity<?> deposit(BigDecimal value, Long accountNumber) throws NotFoundException {
 		Account account = accountService.getAccountByNumber(accountNumber);
 		
 		account.setBalance(account.getBalance().add(value));
-		accountService.edit(account.getId(), account);
+		
+		Object response = accountService.edit(account.getId(), account).get();
+		
+		if(response instanceof String) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		}
+		
+		return ResponseEntity.ok(response);
 	}
 	
 	/**
