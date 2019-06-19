@@ -17,8 +17,8 @@ public class AccountServiceImpl implements AccountService {
 	private AccountRepository repository;
 
 	@Override
-	public Account create(Account account) {
-		return repository.saveAndFlush(account);
+	public void create(Account account) {
+		repository.saveAndFlush(account);
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public Account getAccount(String owner) {
-		return repository.findByOwner(owner);
+		return repository.findByOwnerName(owner);
 	}
 
 	@Override
@@ -52,10 +52,10 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public Account edit(Long id, Account account) {
+	public void edit(Long id, Account account) {
 		Account existingAccount = repository.getOne(id);
 		BeanUtils.copyProperties(existingAccount, account);
-		return repository.saveAndFlush(existingAccount);		
+		repository.saveAndFlush(existingAccount);		
 	}
 
 	@Override

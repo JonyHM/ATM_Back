@@ -17,15 +17,15 @@ public class UserServiceImpl implements UserService {
 	private UserRepository repository;
 	
 	@Override
-	public User create(User user) {
-		return repository.saveAndFlush(user);
+	public void create(User user) {
+		repository.saveAndFlush(user);
 	}
 
 	@Override
-	public User edit(Long id, User user) {
+	public void edit(Long id, User user) {
 		User existingUser = repository.getOne(id);
 		BeanUtils.copyProperties(existingUser, user);
-		return repository.saveAndFlush(existingUser);
+		repository.saveAndFlush(existingUser);
 	}
 
 	@Override

@@ -6,8 +6,8 @@ import com.arm.atm.entity.User;
 
 public interface UserService {
 	
-	User create(User user);
-	User edit(Long id, User user);
+	void create(User user);
+	void edit(Long id, User user);
 	User getUser(Long id);
 	User getUser(String name);
 	void delete(Long id);

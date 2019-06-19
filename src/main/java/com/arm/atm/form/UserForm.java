@@ -1,27 +1,19 @@
-package com.arm.atm.dto;
-
-import java.math.BigDecimal;
+package com.arm.atm.form;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
-public class AtmDTO {
+@Data
+public class UserForm {
 	
 	@NotNull @NotEmpty
-	private String bankName;
-	@NotNull @NotEmpty
-	private Long accountNumber;
+	private String name;
 	@NotNull @NotEmpty
 	private String password;
-	@NotNull @NotEmpty
-	private BigDecimal value;
 }

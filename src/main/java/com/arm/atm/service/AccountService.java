@@ -6,8 +6,8 @@ import com.arm.atm.entity.Account;
 
 public interface AccountService {
 	
-		Account create(Account account);
-		Account edit(Long id, Account account);
+		void create(Account account);
+		void edit(Long id, Account account);
 		Account getAccount(Long id);
 		Account getAccountByNumber(Long accountNumber);
 		Account getAccount(String owner);

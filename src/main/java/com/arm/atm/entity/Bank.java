@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -38,6 +40,7 @@ public class Bank implements Serializable {
 	private Long id;
 	
 	@Column(unique = true)
+	@NotNull @NotEmpty
 	private String name;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "bank")

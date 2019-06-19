@@ -6,8 +6,8 @@ import com.arm.atm.entity.Bank;
 
 public interface BankService {
 
-	Bank create(Bank bank);
-	Bank edit(Long id, Bank bank);
+	void create(Bank bank);
+	void edit(Long id, Bank bank);
 	Bank getBank(Long id);
 	Bank getBank(String name);
 	void delete(Long id);

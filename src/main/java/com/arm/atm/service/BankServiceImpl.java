@@ -17,8 +17,8 @@ public class BankServiceImpl implements BankService {
 	private BankRepository repository;
 	
 	@Override
-	public Bank create(Bank bank) {
-		return repository.saveAndFlush(bank);
+	public void create(Bank bank) {
+		repository.saveAndFlush(bank);
 	}
 
 	@Override
@@ -52,10 +52,10 @@ public class BankServiceImpl implements BankService {
 	}
 
 	@Override
-	public Bank edit(Long id, Bank bank) {
+	public void edit(Long id, Bank bank) {
 		Bank existingBank = repository.getOne(id);
 		BeanUtils.copyProperties(existingBank, bank);
-		return repository.saveAndFlush(existingBank);		
+		repository.saveAndFlush(existingBank);		
 	}
 
 }

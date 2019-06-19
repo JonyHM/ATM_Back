@@ -3,13 +3,18 @@ package com.arm.atm.controller;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -18,10 +23,12 @@ import com.arm.atm.component.AccountParser;
 import com.arm.atm.dto.AccountDTO;
 import com.arm.atm.entity.Account;
 import com.arm.atm.entity.Bank;
+import com.arm.atm.form.AccountForm;
 import com.arm.atm.service.AccountServiceImpl;
 import com.arm.atm.service.BankServiceImpl;
 
 @RestController
+@RequestMapping(value="/account")
 public class AccountController {
 
 	@Autowired
@@ -36,28 +43,28 @@ public class AccountController {
 	 * @param account
 	 * @return A message of success for the creation of the new account object
 	 */	
-	@RequestMapping(value="/account", method=RequestMethod.POST)
+	@PostMapping()
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<?> createAccount(@RequestBody AccountDTO account) {
+	public ResponseEntity<?> createAccount(@RequestBody @Valid AccountForm account) {
 		Bank bank = bankService.getBank(account.getBankName());
 		Account newAccount = accountParser.parse(account, bank);		
-		Account responseAccount = accountService.create(newAccount);
+		accountService.create(newAccount);
 		
 		URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/account")
-                .buildAndExpand(responseAccount.getId()).toUri();
+                .fromCurrentRequest().path("/account/{id}")
+                .buildAndExpand(newAccount.getId()).toUri();
 
-		return ResponseEntity.created(location).build();		
+		return ResponseEntity.created(location).body(new AccountDTO(newAccount));
 	}
 	
 	/**
 	 * 
 	 * @return A list of all accounts stored within the database
 	 */
-	@RequestMapping(value="/accounts", method=RequestMethod.GET)
+	@GetMapping()
 	@ResponseStatus(HttpStatus.OK)
-	public List<Account> listAccounts() {
-		return accountService.getAll();
+	public List<AccountDTO> listAccounts() {
+		return AccountDTO.parse(accountService.getAll());
 	}
 	
 	/**
@@ -65,10 +72,10 @@ public class AccountController {
 	 * @param id
 	 * @return The details of a certain account by its given ID
 	 */
-	@RequestMapping(value="/account/{id}", method=RequestMethod.GET)
+	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public Account findAccount(@PathVariable Long id) {
-		return accountService.getAccount(id);
+	public AccountDTO findAccount(@PathVariable Long id) {
+		return AccountDTO.parse(accountService.getAccount(id));
 	}
 	
 	/**
@@ -77,16 +84,18 @@ public class AccountController {
 	 * @param account
 	 * @return An message informing the successful update of the account
 	 */
-	@RequestMapping(value="/account/{id}", method=RequestMethod.PUT)
+	@PutMapping("/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<?> updateAccount(@PathVariable Long id, @RequestBody Account account) {
-		Account responseAccount = accountService.edit(id, account);
+	public ResponseEntity<?> updateAccount(@PathVariable Long id, @RequestBody @Valid AccountForm account) {
+		Bank bank = bankService.getBank(account.getBankName());
+		Account newAccount = accountParser.parse(account, bank);	
+		accountService.edit(id, newAccount);
 		
 		URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/account/{id}")
-                .buildAndExpand(responseAccount.getId()).toUri();
+                .buildAndExpand(newAccount.getId()).toUri();
 
-		return ResponseEntity.created(location).build();	
+		return ResponseEntity.created(location).body(new AccountDTO(newAccount));	
 	}
 	
 	/**
@@ -94,7 +103,7 @@ public class AccountController {
 	 * @param id
 	 * @return An message informing the successful deletion of the account
 	 */
-	@RequestMapping(value="/account/{id}", method=RequestMethod.DELETE)
+	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<?> deleteAccount(@PathVariable Long id) {
 		accountService.delete(id);

@@ -19,64 +19,64 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.arm.atm.component.BankParser;
-import com.arm.atm.dto.BankDTO;
-import com.arm.atm.entity.Bank;
-import com.arm.atm.service.BankServiceImpl;
+import com.arm.atm.component.UserParser;
+import com.arm.atm.dto.UserDTO;
+import com.arm.atm.entity.User;
+import com.arm.atm.form.UserForm;
+import com.arm.atm.service.UserServiceImpl;
 
 @RestController
-@RequestMapping(value="/bank")
-public class BankController {
+@RequestMapping(value="/user")
+public class UserController {
 
 	@Autowired
-	private BankServiceImpl bankService;
+	private UserServiceImpl userService;
 	@Autowired
-	private BankParser bankParser;
+	private UserParser userparser;
 	
 	@PostMapping()
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<?> createBank(@RequestBody @Valid BankDTO bankForm) {
-		Bank bank = bankParser.parse(bankForm);
-		bankService.create(bank);
+	public ResponseEntity<?> createAccount(@RequestBody @Valid UserForm user) {
+		User newUser = userparser.parse(user);		
+		userService.create(newUser);
 		
 		URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/bank/{id}")
-                .buildAndExpand(bank.getId()).toUri();
+                .fromCurrentRequest().path("/user/{id}")
+                .buildAndExpand(newUser.getId()).toUri();
 
-		return ResponseEntity.created(location).body(new BankDTO(bank));		
+		return ResponseEntity.created(location).body(new UserDTO(newUser));
 	}
-
+	
 	@GetMapping()
 	@ResponseStatus(HttpStatus.OK)
-	public List<BankDTO> listBanks() {
-		return BankDTO.parse(bankService.getAll());
+	public List<UserDTO> listAccounts() {
+		return UserDTO.parse(userService.getAll());
 	}
 	
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public BankDTO findBank(@PathVariable Long id) {
-		return BankDTO.parse(bankService.getBank(id));
+	public UserDTO findAccount(@PathVariable Long id) {
+		return UserDTO.parse(userService.getUser(id));
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updateBank(@PathVariable Long id, @RequestBody @Valid BankDTO bankForm) {
-		Bank bank = bankParser.parse(bankForm);
-		bankService.edit(id, bank);
+	@ResponseStatus(HttpStatus.CREATED)
+	public ResponseEntity<?> updateAccount(@PathVariable Long id, @RequestBody @Valid UserForm user) {
+		User newUser = userparser.parse(user);	
+		userService.edit(id, newUser);
 		
 		URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/bank")
-                .buildAndExpand(bank.getId()).toUri();
+                .fromCurrentRequest().path("/user/{id}")
+                .buildAndExpand(newUser.getId()).toUri();
 
-		return ResponseEntity.created(location).body(new BankDTO(bank));
+		return ResponseEntity.created(location).body(new UserDTO(newUser));	
 	}
 	
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public ResponseEntity<?> deleteBank(@PathVariable Long id) {
-		bankService.delete(id);
+	public ResponseEntity<?> deleteAccount(@PathVariable Long id) {
+		userService.delete(id);
 		
 		return ResponseEntity.noContent().build();
 	}
-	
-	
 }
