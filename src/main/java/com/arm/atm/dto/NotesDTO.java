@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @Data
 public class NotesDTO {
 
-	private int hundred = 0;
-	private int fifty = 0;
-	private int twenty = 0;
-	private int ten = 0;
+	private Integer hundred = 0;
+	private Integer fifty = 0;
+	private Integer twenty = 0;
+	private Integer ten = 0;
 	
 	/**
 	 * Verifies if the given key string is related of one of the available notes at this ATM

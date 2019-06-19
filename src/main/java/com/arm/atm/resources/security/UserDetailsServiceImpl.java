@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import com.arm.atm.entity.User;
 import com.arm.atm.service.UserServiceImpl;
 
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -14,8 +15,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Object response = userService.getUser(username).get();
 		
-		UserDS user = new UserDS(userService.getUser(username));
+		if(response instanceof String) {
+			throw new UsernameNotFoundException((String) response);
+		}
+		UserDS user = new UserDS((User) response);
 		return user;
 	}
 

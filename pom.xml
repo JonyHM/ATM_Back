@@ -13,7 +13,7 @@
 	<groupId>com.arm.atm</groupId>
 	<artifactId>atm-back</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>atm-back</name>
 	<description>Prova de Backend</description>

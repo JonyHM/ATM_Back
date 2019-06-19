@@ -15,6 +15,7 @@ import com.arm.atm.dto.NotesDTO;
  * @author jonathasmoraes
  *
  */
+///ALterar		///ALterar -> Chamará a cadeia de notas para o cálculo
 @Component
 public class WithdrawNotes {
 
@@ -35,7 +36,7 @@ public class WithdrawNotes {
 	 */
 	public NotesDTO withdrawal(BigDecimal amount) {		
 		for (Entry<String, BigDecimal> note : notesMap.entrySet()) {
-			amount = setNoteNumber(amount, note);
+			amount = setNoteNumber(amount.intValue(), note);
 		}
 		
 		return notes;
@@ -49,7 +50,7 @@ public class WithdrawNotes {
 	 * @param note map with note name as @key and note value as @value
 	 * @return remainder amount, after calculating the higher note value
 	 */
-	private BigDecimal setNoteNumber (BigDecimal amount, Entry<String, BigDecimal> note) {
+	private BigDecimal setNoteNumber (Integer amount, Entry<String, BigDecimal> note) {
 		if(amount.compareTo(note.getValue()) >= 0) {
 			notes.setNotes(note.getKey() , amount.divide(note.getValue(), 2, RoundingMode.DOWN));
 			amount = amount.remainder(note.getValue());

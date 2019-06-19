@@ -35,8 +35,14 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public Account getAccount(String owner) {
-		return repository.findByOwnerName(owner);
+	public Optional<?> getAccount(String owner) {
+		Optional<Account> optional = repository.findByOwnerName(owner);
+		
+		if(optional.isPresent()) {
+			return optional; 
+		}
+		
+		return Optional.of("Account with owner named " + owner + " does not exist.");
 	}
 
 	@Override
@@ -81,12 +87,18 @@ public class AccountServiceImpl implements AccountService {
 		existingAccount.setOwner(account.getOwner());
 		
 		
-		return optional;
+		return Optional.of(existingAccount);
 	}
 
 	@Override
-	public Account getAccountByNumber(Long accountNumber) {
-		return repository.findByNumber(accountNumber);
+	public Optional<?> getAccountByNumber(Long accountNumber) {
+		Optional<Account> optional = repository.findByNumber(accountNumber);
+		
+		if(optional.isPresent()) {
+			return optional; 
+		}
+		
+		return Optional.of("Account with number: " + accountNumber + " does not exist.");
 	}
 
 }

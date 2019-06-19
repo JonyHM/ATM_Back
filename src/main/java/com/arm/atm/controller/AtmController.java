@@ -4,16 +4,20 @@ import static org.springframework.http.HttpStatus.OK;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.arm.atm.component.WithdrawNotes;
@@ -25,6 +29,7 @@ import com.arm.atm.service.AccountServiceImpl;
 import javassist.NotFoundException;
 
 @RestController
+@RequestMapping("/atm")
 public class AtmController {
 	
 	@Autowired
@@ -39,13 +44,11 @@ public class AtmController {
 	 * @return a ResposeEntity with a string informing that the deposit has been executed successfully
 	 * @throws NotFoundException 
 	 */
-	@RequestMapping(value = "/deposit", method=RequestMethod.POST)
+	@PostMapping("/deposit")
 	@Transactional
-	public ResponseEntity<String> deposit(@RequestBody AtmDTO depositForm) throws NotFoundException {
+	public ResponseEntity<?> deposit(@RequestBody AtmDTO depositForm) throws NotFoundException {
 		
-		deposit(depositForm.getValue(), depositForm.getAccountNumber());
-		
-		return new ResponseEntity<String>("Your deposit has been successful", OK);
+		return deposit(depositForm.getValue(), depositForm.getAccountNumber());
 	}
 	
 	/**
@@ -55,14 +58,14 @@ public class AtmController {
 	 * successfully and how much notes from each value you can get from your account
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/withdraw", method=RequestMethod.POST)
+	@PostMapping("/withdraw")
 	public ResponseEntity<String> withdraw(@RequestBody AtmDTO withdrawForm) throws Exception {
 		
-		NotesDTO notesNumberObject = withdraw(withdrawForm.getValue().setScale(2, RoundingMode.HALF_EVEN), withdrawForm.getAccountNumber());
-		
-		String notesNumber = notesNumber(notesNumberObject);
+		NotesDTO notesNumberObject = (NotesDTO) withdraw(withdrawForm.getValue().setScale(2, RoundingMode.HALF_EVEN), withdrawForm.getAccountNumber()).get();		
+		///ALterar
+		Map<String, Integer> cash = notesNumber(notesNumberObject);
 
-		return new ResponseEntity<String>("Requested value has been withdrawn successfully \n\nNotes:\n" + notesNumber, OK);
+		return ResponseEntity.ok("Requested value has been withdrawn successfully \n\nWithdrawn Notes:\n" + cash);
 	}
 	
 	/**
@@ -70,7 +73,7 @@ public class AtmController {
 	 * @param accountNumber
 	 * @return a new ResponseEntity carrying the total balance
 	 */
-	@RequestMapping(value = "/balance/{id}", method=RequestMethod.GET)
+	@GetMapping("/balance/{id}")
 	public ResponseEntity<?> balance(@PathVariable Long id) {
 		
 		Object response = accountService.getAccount(id).get();
@@ -89,7 +92,13 @@ public class AtmController {
 	 * @throws NotFoundException 
 	 */
 	private ResponseEntity<?> deposit(BigDecimal value, Long accountNumber) throws NotFoundException {
-		Account account = accountService.getAccountByNumber(accountNumber);
+		Object responseAccount = accountService.getAccountByNumber(accountNumber).get();
+		
+		if(responseAccount instanceof String) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseAccount);
+		}
+		
+		Account account = (Account) responseAccount; 
 		
 		account.setBalance(account.getBalance().add(value));
 		
@@ -99,7 +108,9 @@ public class AtmController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}
 		
-		return ResponseEntity.ok(response);
+		Account editedAccount = (Account)response;
+		
+		return ResponseEntity.ok("Your deposit has been successful\n\nNew balance: " + editedAccount.getBalance());
 	}
 	
 	/**
@@ -109,8 +120,14 @@ public class AtmController {
 	 * @return a NotesDTO object, which contains the number of each available note on the ATM, according to the given value.
 	 * @throws Exception
 	 */
-	private NotesDTO withdraw(BigDecimal value, Long accountNumber) throws Exception {
-		Account account = accountService.getAccountByNumber(accountNumber);
+	private Optional<?> withdraw(BigDecimal value, Long accountNumber) throws Exception {
+		Object response = accountService.getAccountByNumber(accountNumber).get();
+		
+		if(response instanceof String) {
+			return Optional.of(response);
+		}
+		
+		Account account = (Account)response;
 		
 		if(value.compareTo(account.getBalance()) > 0) {
 			throw new RuntimeException("Insufficient balance for withdrawal");
@@ -119,7 +136,7 @@ public class AtmController {
 			accountService.edit(account.getId(), account);
 		}
 		
-		return withdrawNotes.withdrawal(value);
+		return Optional.of(withdrawNotes.withdrawal(value));
 	}
 	
 	/**
@@ -127,25 +144,25 @@ public class AtmController {
 	 * @param notes
 	 * @return
 	 */
-	private String notesNumber(NotesDTO notes) {
-		StringBuilder builder = new StringBuilder();
+	private Map<String, Integer> notesNumber(NotesDTO notes) {
+		Map<String, Integer> response = new HashMap<>();
 		
 		if(notes.getHundred() > 0) {
-			builder.append("Hundred: " + notes.getHundred() + "\n");
+			response.put("Hundred", notes.getHundred());
 		}
 		
 		if(notes.getFifty() > 0) {
-			builder.append("Fifty: " + notes.getFifty() + "\n");
+			response.put("Fifty", notes.getFifty());
 		} 
 		
 		if(notes.getTwenty() > 0) {
-			builder.append("Twenty: " + notes.getTwenty() + "\n");
+			response.put("Twenty", notes.getTwenty());
 		} 
 		
 		if(notes.getTen() > 0) {
-			builder.append("Ten: " + notes.getTen() + "\n");
+			response.put("Ten", notes.getTen());
 		}
 		
-		return builder.toString();
+		return response;
 	}
 }
