@@ -4,8 +4,8 @@ import static org.springframework.http.HttpStatus.OK;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.arm.atm.component.WithdrawNotes;
 import com.arm.atm.dto.AtmDTO;
-import com.arm.atm.dto.NotesDTO;
 import com.arm.atm.entity.Account;
+import com.arm.atm.resources.withdraw.Note;
 import com.arm.atm.service.AccountServiceImpl;
 
 import javassist.NotFoundException;
@@ -58,14 +58,21 @@ public class AtmController {
 	 * successfully and how much notes from each value you can get from your account
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unchecked")
 	@PostMapping("/withdraw")
+	@Transactional
 	public ResponseEntity<String> withdraw(@RequestBody AtmDTO withdrawForm) throws Exception {
 		
-		NotesDTO notesNumberObject = (NotesDTO) withdraw(withdrawForm.getValue().setScale(2, RoundingMode.HALF_EVEN), withdrawForm.getAccountNumber()).get();		
-		///ALterar
-		Map<String, Integer> cash = notesNumber(notesNumberObject);
+		Object notesNumberObject = withdraw(withdrawForm.getValue().setScale(2, RoundingMode.HALF_EVEN), withdrawForm.getAccountNumber()).get();		
+		List<Note> cash = (List<Note>) notesNumberObject;
+		List<String> response = new ArrayList<>();
+		
+		cash.forEach(banknote -> {
+			if(banknote.isValid())
+				response.add(banknote.toString() + "\n");
+		});
 
-		return ResponseEntity.ok("Requested value has been withdrawn successfully \n\nWithdrawn Notes:\n" + cash);
+		return ResponseEntity.ok("Requested value has been withdrawn successfully \n\nWithdrawn Notes:\n" + response);
 	}
 	
 	/**
@@ -91,6 +98,7 @@ public class AtmController {
 	 * @param accountNumber
 	 * @throws NotFoundException 
 	 */
+	@Transactional
 	private ResponseEntity<?> deposit(BigDecimal value, Long accountNumber) throws NotFoundException {
 		Object responseAccount = accountService.getAccountByNumber(accountNumber).get();
 		
@@ -117,9 +125,10 @@ public class AtmController {
 	 * Method for account withdrawal. It sets the balance for the account and edit it on the Database.
 	 * @param value
 	 * @param accountNumber
-	 * @return a NotesDTO object, which contains the number of each available note on the ATM, according to the given value.
+	 * @return a NoteDTO object, which contains the number of each available note on the ATM, according to the given value.
 	 * @throws Exception
 	 */
+	@Transactional
 	private Optional<?> withdraw(BigDecimal value, Long accountNumber) throws Exception {
 		Object response = accountService.getAccountByNumber(accountNumber).get();
 		
@@ -132,37 +141,15 @@ public class AtmController {
 		if(value.compareTo(account.getBalance()) > 0) {
 			throw new RuntimeException("Insufficient balance for withdrawal");
 		} else {
-			account.setBalance(account.getBalance().subtract(value));
-			accountService.edit(account.getId(), account);
+			if(value.intValue() % 10 != 0) {
+				throw new RuntimeException("Must be a multiple of ten");
+			} else {
+				account.setBalance(account.getBalance().subtract(value));
+				accountService.edit(account.getId(), account);
+			}
 		}
 		
 		return Optional.of(withdrawNotes.withdrawal(value));
 	}
 	
-	/**
-	 * Method to build a string with the number of each note that will be returned to the user
-	 * @param notes
-	 * @return
-	 */
-	private Map<String, Integer> notesNumber(NotesDTO notes) {
-		Map<String, Integer> response = new HashMap<>();
-		
-		if(notes.getHundred() > 0) {
-			response.put("Hundred", notes.getHundred());
-		}
-		
-		if(notes.getFifty() > 0) {
-			response.put("Fifty", notes.getFifty());
-		} 
-		
-		if(notes.getTwenty() > 0) {
-			response.put("Twenty", notes.getTwenty());
-		} 
-		
-		if(notes.getTen() > 0) {
-			response.put("Ten", notes.getTen());
-		}
-		
-		return response;
-	}
 }
