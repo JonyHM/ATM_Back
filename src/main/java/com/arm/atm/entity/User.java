@@ -29,6 +29,11 @@ import lombok.NoArgsConstructor;
 		  property = "id")
 public class User implements Serializable {
 	
+	public User(String name, String password) {
+		this.name = name;
+		this.password = password;
+	}
+
 	@JsonIgnore
 	private static final long serialVersionUID = 2514706234876532222L;
 
