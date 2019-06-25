@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -76,6 +77,7 @@ public class AccountController {
 	 * @return A list of all accounts stored within the database
 	 */
 	@GetMapping()
+	@Cacheable(value = "accountList")
 	public ResponseEntity<List<AccountDTO>> listAccounts() {
 		return ResponseEntity.ok(AccountDTO.parse(accountService.getAll()));
 	}

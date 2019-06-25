@@ -39,6 +39,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
+<!-- Add cache provider to use it in production -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -72,12 +77,6 @@
 		    <artifactId>liquibase-hibernate5</artifactId>
 		    <version>3.6</version>
 		</dependency>
-		
-<!-- Spring Data -->
-		<dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-jpa</artifactId>
-       	</dependency>
 
 <!-- Others -->
 		<dependency>
