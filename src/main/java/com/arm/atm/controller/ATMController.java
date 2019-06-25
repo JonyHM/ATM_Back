@@ -1,7 +1,5 @@
 package com.arm.atm.controller;
 
-import static org.springframework.http.HttpStatus.OK;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -30,7 +28,7 @@ import javassist.NotFoundException;
 
 @RestController
 @RequestMapping("/atm")
-public class AtmController {
+public class ATMController {
 	
 	@Autowired
 	private AccountServiceImpl accountService;
@@ -89,7 +87,7 @@ public class AtmController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}
 		
-		return new ResponseEntity<String>("Balance: " + ((Account) response).getBalance(), OK);
+		return ResponseEntity.ok("Balance: " + ((Account) response).getBalance());
 	}
 	
 	/**

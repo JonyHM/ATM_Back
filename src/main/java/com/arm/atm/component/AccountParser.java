@@ -37,7 +37,7 @@ public class AccountParser {
 		Object response = userService.getUser(account.getOwner()).get();
 		
 		if(response instanceof String) {
-			Optional.of(response);
+			return Optional.of(response);
 		}
 		
 		return Optional.of(accountBuilder
