@@ -26,7 +26,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.arm.atm.configuration.UserServiceImplTestConfiguration;
 import com.arm.atm.dto.BankDTO;
 import com.arm.atm.entity.Bank;
-import com.arm.atm.service.BankService;
+import com.arm.atm.service.data.BankService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;

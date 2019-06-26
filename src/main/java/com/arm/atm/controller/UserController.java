@@ -7,6 +7,8 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,7 +25,7 @@ import com.arm.atm.component.UserParser;
 import com.arm.atm.dto.UserDTO;
 import com.arm.atm.entity.User;
 import com.arm.atm.form.UserForm;
-import com.arm.atm.service.UserServiceImpl;
+import com.arm.atm.service.data.UserServiceImpl;
 
 @RestController
 @RequestMapping(value="/user")
@@ -36,7 +38,8 @@ public class UserController {
 	
 	@PostMapping()
 	@Transactional
-	public ResponseEntity<?> createAccount(@RequestBody @Valid UserForm user) {
+	@CacheEvict(value = {"userList", "singleUser"}, allEntries = true)
+	public ResponseEntity<?> createUser(@RequestBody @Valid UserForm user) {
 		User newUser = userparser.parse(user);		
 		userService.create(newUser);
 		
@@ -48,12 +51,14 @@ public class UserController {
 	}
 	
 	@GetMapping()
-	public ResponseEntity<List<UserDTO>> listAccounts() {
+	@Cacheable(value = "userList")
+	public ResponseEntity<List<UserDTO>> listUsers() {
 		return ResponseEntity.ok(UserDTO.parse(userService.getAll()));
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<?> findAccount(@PathVariable Long id) {
+	@Cacheable(value = "singleUser")
+	public ResponseEntity<?> findUser(@PathVariable Long id) {
 		Object response = userService.getUser(id).get();
 		
 		if(response instanceof String) {
@@ -65,7 +70,8 @@ public class UserController {
 	
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> updateAccount(@PathVariable Long id, @RequestBody @Valid UserForm user) {
+	@CacheEvict(value = {"userList", "singleUser"}, allEntries = true)
+	public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody @Valid UserForm user) {
 		User newUser = userparser.parse(user);	
 		Object response = userService.edit(id, newUser).get();
 		
@@ -82,7 +88,8 @@ public class UserController {
 	
 	@DeleteMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> deleteAccount(@PathVariable Long id) {
+	@CacheEvict(value = {"userList", "singleUser"}, allEntries = true)
+	public ResponseEntity<?> deleteUser(@PathVariable Long id) {
 		Object response = userService.delete(id).get();
 		
 		if(response instanceof String) {

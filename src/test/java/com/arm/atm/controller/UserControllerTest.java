@@ -26,7 +26,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.arm.atm.configuration.UserServiceImplTestConfiguration;
 import com.arm.atm.entity.User;
 import com.arm.atm.form.UserForm;
-import com.arm.atm.service.UserService;
+import com.arm.atm.service.data.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;

@@ -1,4 +1,4 @@
-package com.arm.atm.service;
+package com.arm.atm.service.data;
 
 import java.util.List;
 import java.util.Optional;

@@ -22,7 +22,7 @@ import com.arm.atm.component.WithdrawNotes;
 import com.arm.atm.dto.AtmDTO;
 import com.arm.atm.entity.Account;
 import com.arm.atm.resources.withdraw.Note;
-import com.arm.atm.service.AccountServiceImpl;
+import com.arm.atm.service.data.AccountServiceImpl;
 
 import javassist.NotFoundException;
 

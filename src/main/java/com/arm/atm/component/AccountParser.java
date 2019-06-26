@@ -11,7 +11,7 @@ import com.arm.atm.entity.Account;
 import com.arm.atm.entity.Bank;
 import com.arm.atm.entity.User;
 import com.arm.atm.form.AccountForm;
-import com.arm.atm.service.UserServiceImpl;
+import com.arm.atm.service.data.UserServiceImpl;
 
 /**
  * Parses the given information into a Account object

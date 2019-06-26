@@ -7,6 +7,8 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,7 +24,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.arm.atm.component.BankParser;
 import com.arm.atm.dto.BankDTO;
 import com.arm.atm.entity.Bank;
-import com.arm.atm.service.BankServiceImpl;
+import com.arm.atm.service.data.BankServiceImpl;
 
 @RestController
 @RequestMapping(value="/bank")
@@ -35,6 +37,7 @@ public class BankController {
 	
 	@PostMapping()
 	@Transactional
+	@CacheEvict(value = {"bankList", "singleBank"}, allEntries = true)
 	public ResponseEntity<?> createBank(@RequestBody @Valid BankDTO bankForm) {
 		Bank bank = bankParser.parse(bankForm);
 		bankService.create(bank);
@@ -47,11 +50,13 @@ public class BankController {
 	}
 
 	@GetMapping()
+	@Cacheable(value = "bankList")
 	public ResponseEntity<List<BankDTO>> listBanks() {
 		return ResponseEntity.ok(BankDTO.parse(bankService.getAll()));
 	}
 	
 	@GetMapping("/{id}")
+	@Cacheable(value = "singleBank")
 	public ResponseEntity<?> findBank(@PathVariable Long id) {
 		Object response = bankService.getBank(id).get();
 		
@@ -64,6 +69,7 @@ public class BankController {
 	
 	@PutMapping("/{id}")
 	@Transactional
+	@CacheEvict(value = {"bankList", "singleBank"}, allEntries = true)
 	public ResponseEntity<?> updateBank(@PathVariable Long id, @RequestBody @Valid BankDTO bankForm) {
 		Bank bank = bankParser.parse(bankForm);
 		
@@ -81,6 +87,7 @@ public class BankController {
 	}
 	
 	@DeleteMapping("/{id}")
+	@CacheEvict(value = {"bankList", "singleBank"}, allEntries = true)
 	public ResponseEntity<?> deleteBank(@PathVariable Long id) {
 		Object response = bankService.delete(id).get();
 		

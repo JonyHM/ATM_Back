@@ -16,9 +16,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.arm.atm.configuration.AccountServiceImplTestConfiguration;
 import com.arm.atm.configuration.BankServiceImplTestConfiguration;
 import com.arm.atm.configuration.UserServiceImplTestConfiguration;
-import com.arm.atm.service.AccountService;
-import com.arm.atm.service.BankService;
-import com.arm.atm.service.UserService;
+import com.arm.atm.service.data.AccountService;
+import com.arm.atm.service.data.BankService;
+import com.arm.atm.service.data.UserService;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest

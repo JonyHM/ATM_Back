@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +26,8 @@ import com.arm.atm.dto.AccountDTO;
 import com.arm.atm.entity.Account;
 import com.arm.atm.entity.Bank;
 import com.arm.atm.form.AccountForm;
-import com.arm.atm.service.AccountServiceImpl;
-import com.arm.atm.service.BankServiceImpl;
+import com.arm.atm.service.data.AccountServiceImpl;
+import com.arm.atm.service.data.BankServiceImpl;
 
 import javassist.NotFoundException;
 
@@ -42,12 +43,13 @@ public class AccountController {
 	private AccountParser accountParser;
 	
 	/**
-	 * Method to create a new Account with the information given by a form, in frontend, and store it into de database
+	 * Method to create a new Account with the information given by a form, in frontend, and store it into the database
 	 * @param account
 	 * @return A message of success for the creation of the new account object
 	 */	
 	@PostMapping()
 	@Transactional
+	@CacheEvict(value = {"accountList", "singleAccount"}, allEntries = true)
 	public ResponseEntity<?> createAccount(@RequestBody @Valid AccountForm account) {
 		Object bank = bankService.getBank(account.getBankName()).get();
 		
@@ -88,6 +90,7 @@ public class AccountController {
 	 * @return The details of a certain account by its given ID
 	 */
 	@GetMapping("/{id}")
+	@Cacheable(value = "singleAccount")
 	public ResponseEntity<?> findAccount(@PathVariable Long id) {
 		Object response = accountService.getAccount(id).get();
 		
@@ -107,6 +110,7 @@ public class AccountController {
 	 */
 	@PutMapping("/{id}")
 	@Transactional
+	@CacheEvict(value = {"accountList", "singleAccount"}, allEntries = true)
 	public ResponseEntity<?> updateAccount(@PathVariable Long id, @RequestBody @Valid AccountForm account) throws NotFoundException {
 		Object bank = bankService.getBank(account.getBankName()).get();
 		
@@ -142,6 +146,7 @@ public class AccountController {
 	 */
 	@DeleteMapping("/{id}")
 	@Transactional
+	@CacheEvict(value = {"accountList", "singleAccount"}, allEntries = true)
 	public ResponseEntity<?> deleteAccount(@PathVariable Long id) {
 		Object response = accountService.delete(id).get();
 		

@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.arm.atm.entity.User;
-import com.arm.atm.service.UserServiceImpl;
+import com.arm.atm.service.data.UserServiceImpl;
 
 public class UserDetailsServiceImpl implements UserDetailsService {
 	
