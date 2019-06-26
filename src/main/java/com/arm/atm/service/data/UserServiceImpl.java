@@ -58,6 +58,17 @@ public class UserServiceImpl implements UserService {
 		
 		return Optional.of("User " + name + " does not exist."); 
 	}
+	
+	@Override
+	public Optional<?> getUserByEmail(String email) {
+		Optional<User> optional = repository.findByEmail(email);
+		
+		if(optional.isPresent()) {
+			return optional;
+		}
+		
+		return Optional.of("User with email account: " + email + " does not exist."); 
+	}
 
 	@Override
 	public Optional<?> delete(Long id) {

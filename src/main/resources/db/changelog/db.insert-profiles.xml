@@ -8,18 +8,14 @@
 		http://www.liquibase.org/xml/ns/dbchangelog 
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     
-    <changeSet author="jonathasmoraes (generated)" id="1660879554201-10">
-        <insert tableName="BANK">
+    <changeSet author="jonathasmoraes (generated)" id="1660879554201-100">
+        <insert tableName="PROFILE">
             <column name="ID" valueNumeric="1" type="BIGINT(19)"/>
-            <column name="NAME" value="Santander" type="VARCHAR(255)"/>
+            <column name="NAME" value="USER" type="VARCHAR(255)"/>
         </insert>
-        <insert tableName="BANK">
+        <insert tableName="PROFILE">
             <column name="ID" valueNumeric="2" type="BIGINT(19)"/>
-            <column name="NAME" value="Bradesco" type="VARCHAR(255)"/>
-        </insert>
-        <insert tableName="BANK">
-            <column name="ID" valueNumeric="3" type="BIGINT(19)"/>
-            <column name="NAME" value="Banco do Brasil" type="VARCHAR(255)"/>
+            <column name="NAME" value="ADMIN" type="VARCHAR(255)"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

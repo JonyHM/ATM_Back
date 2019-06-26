@@ -9,6 +9,7 @@
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 	
 	<include file="/db/changelog/db.create-tables.xml"/>
+	<include file="/db/changelog/db.insert-profiles.xml"/>
 	<include file="/db/changelog/db.insert-users.xml"/>
 	<include file="/db/changelog/db.insert-banks.xml"/>
 	<include file="/db/changelog/db.insert-accounts.xml"/>

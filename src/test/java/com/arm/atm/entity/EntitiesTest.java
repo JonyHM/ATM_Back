@@ -50,19 +50,20 @@ public class EntitiesTest {
 		User.UserBuilder userBuilder = User.builder();
 		owner = userBuilder
 						.name("Jonathas")
-						.password("abc123")
+						.email("jonathas.moraes@hotmail.com")
+						.password("$2a$10$6dYacfLhmN57zqb3E.bLcedODyUNPVfqv5BV9Y2m39VUtsFYjUsoy")
 						.build();
 		
 		Bank.BankBuilder bankBuilder = Bank.builder();
 		bank = bankBuilder
-						.name("santander")
+						.name("Santander")
 						.build();
 		
 		Account.AccountBuilder accountBuilder = Account.builder();
 		account = accountBuilder
 							.number(554321L)
 							.owner(owner)
-							.password("abc123")
+							.password("$2a$10$6dYacfLhmN57zqb3E.bLcedODyUNPVfqv5BV9Y2m39VUtsFYjUsoy")
 							.balance(BigDecimal.valueOf(520))
 							.bank(bank)
 							.build();

@@ -2,7 +2,7 @@ package com.arm.atm.form;
 
 import javax.validation.constraints.NotEmpty;
 
-import com.arm.atm.entity.User;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,16 +11,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class UserForm {
+public class LoginForm {
 	
-	@NotEmpty
-	private String name;
 	@NotEmpty
 	private String email;
 	@NotEmpty
 	private String password;
 	
-	public static UserForm parse(User user) {
-		return new UserForm(user.getName(), user.getEmail(), user.getPassword());
+	public UsernamePasswordAuthenticationToken parse() {
+		System.out.println(password);
+		return new UsernamePasswordAuthenticationToken(email, password);
 	}
+	
 }

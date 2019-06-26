@@ -75,7 +75,8 @@ public class ATMControllerTest {
 		User.UserBuilder userBuilder = User.builder();
 		owner = userBuilder
 						.name("Jonathas")
-						.password("abc123")
+						.email("jonathas.moraes@hotmail.com")
+						.password("$2a$10$3i3ljybXRcal0FW0HTrkyOBh.XoWbu2f7PXuVxVw7fBPnXKGmhRJW")
 						.build();
 		userService.create(owner);
 		
@@ -85,7 +86,7 @@ public class ATMControllerTest {
 		account = accountBuilder
 							.number(554321L)
 							.owner(owner)
-							.password("abc123")
+							.password("$2a$10$3i3ljybXRcal0FW0HTrkyOBh.XoWbu2f7PXuVxVw7fBPnXKGmhRJW")
 							.balance(BigDecimal.valueOf(520))
 							.bank(bank)
 							.build();
@@ -95,7 +96,7 @@ public class ATMControllerTest {
 	@Test
 	@Transactional
     public void givenAccounts_whenPostDeposit_thenStatus200_andBalanceMatchesTheGivenOne() throws Exception {
-		AtmDTO deposit = new AtmDTO("Santander", 554321L, "abc123", BigDecimal.valueOf(580));
+		AtmDTO deposit = new AtmDTO("Santander", 554321L, "$2a$10$3i3ljybXRcal0FW0HTrkyOBh.XoWbu2f7PXuVxVw7fBPnXKGmhRJW", BigDecimal.valueOf(580));
 		
 		/*Parsing the new deposit to string, in order to post it*/
 		ObjectMapper mapper = new ObjectMapper();
@@ -129,7 +130,7 @@ public class ATMControllerTest {
 	@Test
 	@Transactional
 	public void givenAccounts_whenPostWithdraw_thenStatus200_andBalanceMatchesTheGivenOne() throws Exception {
-		AtmDTO withdraw = new AtmDTO("Santander", 554321L, "abc123", BigDecimal.valueOf(520));
+		AtmDTO withdraw = new AtmDTO("Santander", 554321L, "$2a$10$3i3ljybXRcal0FW0HTrkyOBh.XoWbu2f7PXuVxVw7fBPnXKGmhRJW", BigDecimal.valueOf(520));
 		
 		/*Parsing the new deposit to string, in order to post it*/
 		ObjectMapper mapper = new ObjectMapper();

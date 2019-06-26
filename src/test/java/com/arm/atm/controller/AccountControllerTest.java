@@ -78,7 +78,8 @@ public class AccountControllerTest {
 		User.UserBuilder userBuilder = User.builder();
 		owner = userBuilder
 						.name("Jonathas")
-						.password("abc123")
+						.email("jonathas.moraes@hotmail.com")
+						.password("$2a$10$3i3ljybXRcal0FW0HTrkyOBh.XoWbu2f7PXuVxVw7fBPnXKGmhRJW")
 						.build();
 		userService.create(owner);
 		
@@ -88,7 +89,7 @@ public class AccountControllerTest {
 		account = accountBuilder
 							.number(554321L)
 							.owner(owner)
-							.password("abc123")
+							.password("$2a$10$3i3ljybXRcal0FW0HTrkyOBh.XoWbu2f7PXuVxVw7fBPnXKGmhRJW")
 							.balance(BigDecimal.valueOf(520))
 							.bank(bank)
 							.build();
@@ -201,7 +202,7 @@ public class AccountControllerTest {
 	@Transactional
 	public void whenPostAccount_thenStatus201_andGetValueMatchesTheNewOne() throws Exception {
 		/*Creating a new AccountForm object for posting*/
-		AccountForm newAccount = new AccountForm("Bradesco", 474219L, "123456", "Jose");
+		AccountForm newAccount = new AccountForm("Santander", 523417L, "$2a$10$Wfzshe5u9G4J4ziQbN7HFeOikxxk2jDgIWeYOkfD14E7kBXSRjYpS", "Jose");
 		
 		/*Parsing the new account to string, in order to post it*/
 		ObjectMapper mapper = new ObjectMapper();

@@ -1,14 +1,6 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
-<databaseChangeLog 
-	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
-	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext 
-		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd 
-		http://www.liquibase.org/xml/ns/dbchangelog 
-		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
-    
-    <changeSet author="jonathasmoraes (generated)" id="1560879554201-1">
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="jonathasmoraes (generated)" id="1561574804088-1">
         <createTable tableName="ACCOUNT">
             <column autoIncrement="true" name="ID" type="BIGINT(19)">
                 <constraints primaryKey="true" primaryKeyName="CONSTRAINT_E"/>
@@ -26,7 +18,7 @@
             <column name="OWNER_ID" type="BIGINT(19)"/>
         </createTable>
     </changeSet>
-    <changeSet author="jonathasmoraes (generated)" id="1560879554201-2">
+    <changeSet author="jonathasmoraes (generated)" id="1561574804088-2">
         <createTable tableName="BANK">
             <column autoIncrement="true" name="ID" type="BIGINT(19)">
                 <constraints primaryKey="true" primaryKeyName="CONSTRAINT_1"/>
@@ -36,7 +28,17 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="jonathasmoraes (generated)" id="1560879554201-3">
+    <changeSet author="jonathasmoraes (generated)" id="1561574804088-3">
+        <createTable tableName="PROFILE">
+            <column autoIncrement="true" name="ID" type="BIGINT(19)">
+                <constraints primaryKey="true" primaryKeyName="CONSTRAINT_18"/>
+            </column>
+             <column name="NAME" type="VARCHAR(255)">
+            	<constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="jonathasmoraes (generated)" id="1561574804088-4">
         <createTable tableName="USER">
             <column autoIncrement="true" name="ID" type="BIGINT(19)">
                 <constraints primaryKey="true" primaryKeyName="CONSTRAINT_2"/>
@@ -44,28 +46,60 @@
             <column name="NAME" type="VARCHAR(255)">
             	<constraints nullable="false"/>
             </column>
+            <column name="EMAIL" type="VARCHAR(255)">
+            	<constraints nullable="false"/>
+            </column>
             <column name="PASSWORD" type="VARCHAR(255)">
             	<constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="jonathasmoraes (generated)" id="1560879554201-4">
+    <changeSet author="jonathasmoraes (generated)" id="1561574804088-5">
+        <createTable tableName="USER_PROFILES">
+            <column name="USER_ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PROFILES_ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="jonathasmoraes (generated)" id="1561574804088-6">
+        <addUniqueConstraint columnNames="NUMBER" constraintName="UK_DBFIUBQAHB32NS85K023GR6NN" tableName="ACCOUNT"/>
+    </changeSet>
+    <changeSet author="jonathasmoraes (generated)" id="1561574804088-7">
         <addUniqueConstraint columnNames="NAME" constraintName="UK_LD5HSH9A9D6A849ESQBF7D9QM" tableName="BANK"/>
     </changeSet>
-    <changeSet author="jonathasmoraes (generated)" id="1560879554201-5">
+    <changeSet author="jonathasmoraes (generated)" id="1561574804088-8">
+        <createIndex indexName="FK4NP1KTRT8IWTNCC4OTMHFD6YN_INDEX_9" tableName="USER_PROFILES">
+            <column name="USER_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="jonathasmoraes (generated)" id="1561574804088-9">
+        <createIndex indexName="FK7BAUO77QNJBRC8YJQWRLC8O5K_INDEX_9" tableName="USER_PROFILES">
+            <column name="PROFILES_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="jonathasmoraes (generated)" id="1561574804088-10">
         <createIndex indexName="FKAWL1LRPNGB7H5KTG79ODEIC5W_INDEX_E" tableName="ACCOUNT">
             <column name="BANK_ID"/>
         </createIndex>
     </changeSet>
-    <changeSet author="jonathasmoraes (generated)" id="1560879554201-6">
+    <changeSet author="jonathasmoraes (generated)" id="1561574804088-11">
         <createIndex indexName="FKLIJILGU3Y8BX1RB3OIRMQLW5K_INDEX_E" tableName="ACCOUNT">
             <column name="OWNER_ID"/>
         </createIndex>
     </changeSet>
-    <changeSet author="jonathasmoraes (generated)" id="1560879554201-7">
+    <changeSet author="jonathasmoraes (generated)" id="1561574804088-12">
+        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="USER_PROFILES" constraintName="FK4NP1KTRT8IWTNCC4OTMHFD6YN" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="USER"/>
+    </changeSet>
+    <changeSet author="jonathasmoraes (generated)" id="1561574804088-13">
+        <addForeignKeyConstraint baseColumnNames="PROFILES_ID" baseTableName="USER_PROFILES" constraintName="FK7BAUO77QNJBRC8YJQWRLC8O5K" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="PROFILE"/>
+    </changeSet>
+    <changeSet author="jonathasmoraes (generated)" id="1561574804088-14">
         <addForeignKeyConstraint baseColumnNames="BANK_ID" baseTableName="ACCOUNT" constraintName="FKAWL1LRPNGB7H5KTG79ODEIC5W" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="BANK"/>
     </changeSet>
-    <changeSet author="jonathasmoraes (generated)" id="1560879554201-8">
+    <changeSet author="jonathasmoraes (generated)" id="1561574804088-15">
         <addForeignKeyConstraint baseColumnNames="OWNER_ID" baseTableName="ACCOUNT" constraintName="FKLIJILGU3Y8BX1RB3OIRMQLW5K" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="USER"/>
     </changeSet>
 </databaseChangeLog>

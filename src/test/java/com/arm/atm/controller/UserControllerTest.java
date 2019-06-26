@@ -57,13 +57,15 @@ public class UserControllerTest {
 		User.UserBuilder userBuilder = User.builder();
 		owner = userBuilder
 						.name("Jonathas")
-						.password("abc123")
+						.email("jonathas.moraes@hotmail.com")
+						.password("$2a$10$6dYacfLhmN57zqb3E.bLcedODyUNPVfqv5BV9Y2m39VUtsFYjUsoy")
 						.build();
 		userService.create(owner);
 		
 		user = userBuilder
 						.name("Lucas")
-						.password("123abc")
+						.email("lucas.moraes@hotmail.com")
+						.password("$2a$10$Wfzshe5u9G4J4ziQbN7HFeOikxxk2jDgIWeYOkfD14E7kBXSRjYpS")
 						.build();
 		userService.create(user);
 	}
@@ -166,7 +168,7 @@ public class UserControllerTest {
 	@Transactional
 	public void whenPostAccount_thenStatus201_andGetValueMatchesTheNewOne() throws Exception {
 		/*Creating a new UserForm object for posting*/
-		UserForm newUser = new UserForm("Lilian", "123456ab");
+		UserForm newUser = new UserForm("Lilian", "lilian.silva@gmail.com", "$2a$10$OhYO5ri1SyY1a7lwyjiqGuVfFoGbieLx3rz4SJ7jviwVicnRH27D6");
 		
 		/*Parsing the new user to string, in order to post it*/
 		ObjectMapper mapper = new ObjectMapper();

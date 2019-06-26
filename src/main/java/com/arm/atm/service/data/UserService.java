@@ -11,6 +11,7 @@ public interface UserService {
 	Optional<?> edit(Long id, User user);
 	Optional<?> getUser(Long id);
 	Optional<?> getUser(String name);
+	Optional<?> getUserByEmail(String email);
 	Optional<?> delete(Long id);
 	List<User> getAll(int page, int limit);
 	List<User> getAll();

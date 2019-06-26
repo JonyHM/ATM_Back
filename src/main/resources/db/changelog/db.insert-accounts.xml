@@ -8,12 +8,12 @@
 		http://www.liquibase.org/xml/ns/dbchangelog 
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     
-    <changeSet author="jonathasmoraes (generated)" id="1560879554201-9">
+    <changeSet author="jonathasmoraes (generated)" id="1660879554201-9">
     	<insert tableName="ACCOUNT">
             <column name="ID" valueNumeric="1" type="BIGINT(19)"/>
             <column name="BALANCE" valueNumeric="550" type="DECIMAL(19, 2)"/>
             <column name="NUMBER" valueNumeric="523417" type="BIGINT(19)"/>
-            <column name="PASSWORD" value="123abc" type="VARCHAR(255)"/>
+            <column name="PASSWORD" value="$2a$10$Wfzshe5u9G4J4ziQbN7HFeOikxxk2jDgIWeYOkfD14E7kBXSRjYpS" type="VARCHAR(255)"/>
             <column name="BANK_ID" valueNumeric="1" type="BIGINT(19)"/>
             <column name="OWNER_ID" valueNumeric="1" type="BIGINT(19)"/>
         </insert>
@@ -21,7 +21,7 @@
             <column name="ID" valueNumeric="2" type="BIGINT(19)"/>
             <column name="BALANCE" valueNumeric="50" type="DECIMAL(19, 2)"/>
             <column name="NUMBER" valueNumeric="324156" type="BIGINT(19)"/>
-            <column name="PASSWORD" value="456abc" type="VARCHAR(255)"/>
+            <column name="PASSWORD" value="$2a$10$pntxWtVFMWKOvKE3snpYzu0x7reifv8NvrC4jrDVRF2ktYh70pXOO" type="VARCHAR(255)"/>
             <column name="BANK_ID" valueNumeric="2" type="BIGINT(19)"/>
             <column name="OWNER_ID" valueNumeric="2" type="BIGINT(19)"/>
         </insert>
@@ -29,7 +29,7 @@
             <column name="ID" valueNumeric="3" type="BIGINT(19)"/>
             <column name="BALANCE" valueNumeric="1050" type="DECIMAL(19, 2)"/>
             <column name="NUMBER" valueNumeric="523418" type="BIGINT(19)"/>
-            <column name="PASSWORD" value="456abc" type="VARCHAR(255)"/>
+            <column name="PASSWORD" value="$2a$10$pntxWtVFMWKOvKE3snpYzu0x7reifv8NvrC4jrDVRF2ktYh70pXOO" type="VARCHAR(255)"/>
             <column name="BANK_ID" valueNumeric="3" type="BIGINT(19)"/>
             <column name="OWNER_ID" valueNumeric="2" type="BIGINT(19)"/>
         </insert>
