@@ -4,6 +4,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
+/**
+ * Configures Jackson for API's JSON responses
+ * 
+ * @author jonathasmoraes
+ *
+ */
 @Configuration
 public class JacksonConfiguration {
 

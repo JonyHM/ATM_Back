@@ -21,6 +21,12 @@ public class UserServiceImpl implements UserService {
 		repository.saveAndFlush(user);
 	}
 
+	/**
+	 * Edits a user by its given ID
+	 * @param id
+	 * @param user
+	 * @return an optional of User type if the given ID is valid on the database. Otherwise, returns an optional of a string, informing that the user does not exist
+	 */
 	@Override
 	public Optional<?> edit(Long id, User user) {
 		Optional<User> optional = repository.findById(id);
@@ -37,6 +43,11 @@ public class UserServiceImpl implements UserService {
 		return optional;
 	}
 
+	/**
+	 * Gets a user by its given ID
+	 * @param id
+	 * @return an optional of User type if the given ID is valid on the database. Otherwise, returns an optional of a string, informing that the user does not exist
+	 */
 	@Override
 	public Optional<?> getUser(Long id) {
 		Optional<User> optional = repository.findById(id);
@@ -48,6 +59,11 @@ public class UserServiceImpl implements UserService {
 		return Optional.of("User with ID: " + id + " does not exist.");
 	}
 
+	/**
+	 * Gets a user by its given name
+	 * @param name
+	 * @return an optional of User type if the given name is valid on the database. Otherwise, returns an optional of a string, informing that the user does not exist
+	 */
 	@Override
 	public Optional<?> getUser(String name) {
 		Optional<User> optional = repository.findByName(name);
@@ -59,6 +75,11 @@ public class UserServiceImpl implements UserService {
 		return Optional.of("User " + name + " does not exist."); 
 	}
 	
+	/**
+	 * Gets a user by its given email
+	 * @param email
+	 * @return an optional of User type if the given email is valid on the database. Otherwise, returns an optional of a string, informing that the user does not exist
+	 */
 	@Override
 	public Optional<?> getUserByEmail(String email) {
 		Optional<User> optional = repository.findByEmail(email);
@@ -70,6 +91,11 @@ public class UserServiceImpl implements UserService {
 		return Optional.of("User with email account: " + email + " does not exist."); 
 	}
 
+	/**
+	 * Deletes a user by its given ID
+	 * @param id
+	 * @return an optional of User type if the given ID is valid on the database. Otherwise, returns an optional of a string, informing that the user does not exist
+	 */
 	@Override
 	public Optional<?> delete(Long id) {
 		Optional<User> optional = repository.findById(id);

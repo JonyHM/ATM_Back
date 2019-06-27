@@ -15,12 +15,24 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.arm.atm.dto.FieldErrorDTO;
 
+/**
+ * Handler for validation errors within the API
+ * 
+ * @author jonathasmoraes
+ *
+ */
 @RestControllerAdvice
 public class ValidationErrorHandler {
 	
 	@Autowired
 	private MessageSource messageSource; 
 
+	/**
+	 * Handles thrown MethodArgumentNotValidException, decreasing the size of exception messages  
+	 * 
+	 * @param exception
+	 * @return
+	 */
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public List<FieldErrorDTO> handle(MethodArgumentNotValidException exception) {

@@ -26,6 +26,12 @@ import com.arm.atm.dto.BankDTO;
 import com.arm.atm.entity.Bank;
 import com.arm.atm.service.data.BankServiceImpl;
 
+/**
+ * Controller for Bank-related endpoints
+ * 
+ * @author jonathasmoraes
+ *
+ */
 @RestController
 @RequestMapping(value="/bank")
 public class BankController {

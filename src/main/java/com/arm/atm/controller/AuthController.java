@@ -20,6 +20,12 @@ import com.arm.atm.form.LoginForm;
 import com.arm.atm.service.auth.ATMServiceImpl;
 import com.arm.atm.service.auth.LoginServiceImpl;
 
+/**
+ * Controller for user and account authorization
+ * 
+ * @author jonathasmoraes
+ *
+ */
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -33,6 +39,12 @@ public class AuthController {
 	@Autowired
 	private ATMServiceImpl atmService;
 	
+	/**
+	 * Endpoint for access to the API
+	 * 
+	 * @param form
+	 * @return a token for an authorized user
+	 */
 	@PostMapping
 	@Transactional
 	public ResponseEntity<?> userLogin(@RequestBody @Valid LoginForm form) {

@@ -29,7 +29,7 @@ public class AccountParser {
 	 * Parses a AccountDTO object and a Bank object into a new Account object
 	 * @param account
 	 * @param bank
-	 * @return a new Account object for storage on Database
+	 * @return an optional of Account object for storage on Database. If some information given from AccountForm is invalid, returns a optional of String informing which information is incorrect or invalid
 	 */
 	public Optional<?> parse(AccountForm account, Bank bank) {
 		Account.AccountBuilder accountBuilder = Account.builder();

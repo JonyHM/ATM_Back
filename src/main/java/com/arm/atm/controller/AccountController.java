@@ -32,6 +32,12 @@ import com.arm.atm.service.data.BankServiceImpl;
 
 import javassist.NotFoundException;
 
+/**
+ * Controller for Account-related endpoints
+ * 
+ * @author jonathasmoraes
+ *
+ */
 @RestController
 @RequestMapping(value="/account")
 public class AccountController {

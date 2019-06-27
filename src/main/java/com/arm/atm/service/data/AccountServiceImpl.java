@@ -23,6 +23,11 @@ public class AccountServiceImpl implements AccountService {
 		repository.saveAndFlush(account);
 	}
 
+	/**
+	 * Gets an account by its given ID
+	 * @param id
+	 * @return an optional of Account type if the given ID is valid on the database. Otherwise, returns an optional of a string, informing that the account does not exist
+	 */
 	@Override
 	public Optional<?> getAccount(Long id) {
 		Optional<Account> optional = repository.findById(id);
@@ -34,6 +39,11 @@ public class AccountServiceImpl implements AccountService {
 		return Optional.of("Account with ID: " + id + " does not exist.");
 	}
 
+	/**
+	 * Gets an account by its given owner name
+	 * @param name
+	 * @return an optional of Account type if the given owner name is valid on the database. Otherwise, returns an optional of a string, informing that the account does not exist
+	 */
 	@Override
 	public Optional<?> getAccount(String owner) {
 		Optional<Account> optional = repository.findByOwnerName(owner);
@@ -45,6 +55,11 @@ public class AccountServiceImpl implements AccountService {
 		return Optional.of("Account with owner named " + owner + " does not exist.");
 	}
 
+	/**
+	 * Deletes an account by its given ID
+	 * @param id
+	 * @return an optional of Account type if the given ID is valid on the database. Otherwise, returns an optional of a string, informing that the account does not exist
+	 */
 	@Override
 	public Optional<?> delete(Long id) {
 		Optional<Account> optional = repository.findById(id);
@@ -72,6 +87,12 @@ public class AccountServiceImpl implements AccountService {
 		return repository.count();
 	}
 
+	/**
+	 * Edits an account by its given ID
+	 * @param id
+	 * @param bank
+	 * @return an optional of Account type if the given ID is valid on the database. Otherwise, returns an optional of a string, informing that the account does not exist
+	 */
 	@Override
 	public Optional<?> edit(Long id, Account account) throws NotFoundException {
 		Optional<Account> optional = repository.findById(id);
@@ -90,6 +111,11 @@ public class AccountServiceImpl implements AccountService {
 		return Optional.of(existingAccount);
 	}
 
+	/**
+	 * Deletes an account by its given number
+	 * @param id
+	 * @return an optional of Account type if the given number is valid on the database. Otherwise, returns an optional of a string, informing that the account does not exist
+	 */
 	@Override
 	public Optional<?> getAccountByNumber(Long accountNumber) {
 		Optional<Account> optional = repository.findByNumber(accountNumber);

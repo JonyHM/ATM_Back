@@ -46,7 +46,7 @@ public class User implements Serializable {
 	private String password;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
-	private List<Account> account;
+	private List<Account> accounts;
 	
 	@ManyToMany(fetch = FetchType.EAGER)	
 	private List<Profile> profiles;

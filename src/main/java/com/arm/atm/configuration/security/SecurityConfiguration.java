@@ -9,7 +9,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -25,6 +24,12 @@ import com.arm.atm.service.auth.LoginServiceImpl;
 import com.arm.atm.service.auth.UserDetailsServiceImpl;
 import com.arm.atm.service.data.UserServiceImpl;
 
+/**
+ * Configuration for the security layer for the API
+ * 
+ * @author jonathasmoraes
+ *
+ */
 @EnableWebSecurity
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -43,7 +48,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 	
-	/*Authorization*/
+	/**
+	 * Configurations for API's authorization layer within security
+	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.headers().frameOptions().disable();
@@ -61,17 +68,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.addFilterBefore(new TokenAuthFilter(loginService, userService), UsernamePasswordAuthenticationFilter.class);
 	}
 	
-	/*Authentication*/
+	/**
+	 * Configurations for API's authentication layer within security
+	 */
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth
 			.userDetailsService(userDetailsServiceImpl)
 			.passwordEncoder(bCryptPasswordEncoder());
-	}
-	
-	/*Static files (js, css, images...)*/
-	@Override
-	public void configure(WebSecurity web) throws Exception {
 	}
 	
 	@Override
@@ -80,8 +84,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return super.authenticationManager();
 	}
 	
+	/**
+	 * Configurations for API's Cross-origin resource sharing, setting allowed methods, headers and origins.
+	 * 
+	 * @return a UrlBasedCorsConfigurationSource object for the API root address
+	 */
 	@Bean
-    CorsConfigurationSource corsConfigurationSource() {
+	protected CorsConfigurationSource corsConfigurationSource() {
 	    CorsConfiguration configuration = new CorsConfiguration();
 	    configuration.setAllowedOrigins(Arrays.asList("*"));
 	    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));

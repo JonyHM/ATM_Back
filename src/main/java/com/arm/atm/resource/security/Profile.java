@@ -1,14 +1,18 @@
 package com.arm.atm.resource.security;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 import org.springframework.security.core.GrantedAuthority;
 
+import com.arm.atm.entity.User;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -37,6 +41,9 @@ public class Profile implements GrantedAuthority {
 	
 	@Enumerated(EnumType.STRING)
 	private AuthorizationLevel name;
+	
+	@ManyToMany(mappedBy = "profiles")
+	private List<User> users;
 	
 	@Override
 	public String getAuthority() {
