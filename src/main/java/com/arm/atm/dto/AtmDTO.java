@@ -22,4 +22,7 @@ public class AtmDTO {
 	private String password;
 	@NotNull
 	private BigDecimal value;
+	
+	/*For ATM operations, the password, account number and bank name can be retrieved by ATMForm, 
+	 * provided each time a ATM request is made*/
 }

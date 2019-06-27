@@ -97,4 +97,9 @@ public class UserServiceImpl implements UserService {
 		return repository.count();
 	}
 
+	@Override
+	public User getOne(Long id) {
+		return repository.getOne(id);
+	}
+
 }

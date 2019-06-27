@@ -1,15 +1,15 @@
-package com.arm.atm.resources.withdraw;
+package com.arm.atm.resource.withdraw;
 
-public class Twenty extends Note {
+public class Hundred extends Note {
 	
-	public Twenty(Note nextNote) {
+	public Hundred(Note nextNote) {
 		setNextNote(nextNote);
-		setValue(20);
+		setValue(100);
 	}
 
 	@Override
 	public void calculate(Integer amount) {
-		setQuantity( amount / this.value );
+		setQuantity(amount / this.value);
 		
 		this.nextNote.calculate(amount % this.value);
 	}
@@ -21,7 +21,7 @@ public class Twenty extends Note {
 	
 	@Override
 	public String toString() {
-		return "Banknotes of Twenty: " + this.quantity;
+		return "Banknotes of Hundred: " + this.quantity;
 	}
 
 }

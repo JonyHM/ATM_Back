@@ -1,6 +1,7 @@
 package com.arm.atm.form;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
@@ -11,15 +12,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class LoginForm {
+public class ATMForm {
 	
-	@NotEmpty
-	private String email;
+	@NotNull
+	private Long number;
 	@NotEmpty
 	private String password;
 	
 	public UsernamePasswordAuthenticationToken parse() {
-		return new UsernamePasswordAuthenticationToken(email, password);
+		return new UsernamePasswordAuthenticationToken(number.toString(), password);
 	}
 	
 }

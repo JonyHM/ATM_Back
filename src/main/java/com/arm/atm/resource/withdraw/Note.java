@@ -1,4 +1,4 @@
-package com.arm.atm.resources.withdraw;
+package com.arm.atm.resource.withdraw;
 
 import javax.validation.constraints.NotNull;
 

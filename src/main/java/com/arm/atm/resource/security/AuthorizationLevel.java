@@ -1,4 +1,4 @@
-package com.arm.atm.resources.security;
+package com.arm.atm.resource.security;
 
 public enum AuthorizationLevel {
 

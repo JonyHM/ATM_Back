@@ -7,16 +7,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import com.arm.atm.entity.User;
-import com.arm.atm.resource.security.UserDS;
-import com.arm.atm.service.data.UserServiceImpl;
+import com.arm.atm.entity.Account;
+import com.arm.atm.resource.security.AccountDS;
+import com.arm.atm.service.data.AccountServiceImpl;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Service
-public class LoginServiceImpl implements LoginService {
+public class ATMServiceImpl implements ATMService {
 	
 	@Value("${atm.jwt.expiration}")
 	private String expiration;
@@ -25,18 +25,19 @@ public class LoginServiceImpl implements LoginService {
 	private String secret;
 	
 	@Autowired
-	private UserServiceImpl service;
+	private AccountServiceImpl service;
 
 	@Override
 	public String generateToken(Authentication auth) {
-		UserDS loggedDetails = (UserDS)auth.getPrincipal();
-		User logged = (User)service.getUserByEmail(loggedDetails.getUsername()).get();
+		AccountDS loggedDetails = (AccountDS)auth.getPrincipal();
+		
+		Account logged = (Account)service.getAccountByNumber(Long.parseLong(loggedDetails.getUsername())).get();
 		
 		Date now = new Date();
 		Date expDate = new Date(now.getTime() + Long.parseLong(expiration));
 		
 		return Jwts.builder()
-				.setIssuer("ATM Web API - User login")
+				.setIssuer("ATM Web API - ATM operations login")
 				.setSubject(logged.getId().toString())
 				.setIssuedAt(now)
 				.setExpiration(expDate)

@@ -14,12 +14,16 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.arm.atm.resources.security.AuthorizationLevel;
+import com.arm.atm.filter.security.TokenAuthFilter;
+import com.arm.atm.resource.security.AuthorizationLevel;
+import com.arm.atm.service.auth.LoginServiceImpl;
 import com.arm.atm.service.auth.UserDetailsServiceImpl;
+import com.arm.atm.service.data.UserServiceImpl;
 
 @EnableWebSecurity
 @Configuration
@@ -27,6 +31,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private UserDetailsServiceImpl userDetailsServiceImpl;
+	
+	@Autowired
+	private LoginServiceImpl loginService;
+	
+	@Autowired
+	private UserServiceImpl userService;
 
 	@Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -41,11 +51,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.antMatchers("/atm/**").hasRole(AuthorizationLevel.USER.toString())
 			.antMatchers("/h2-console/**").permitAll()
 			.antMatchers(HttpMethod.POST, "/auth").permitAll()
+			.antMatchers(HttpMethod.POST, "/auth/atm").permitAll()
 			.anyRequest().authenticated()
 		.and()
 			.csrf().disable()
 			.sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		.and()
+			.addFilterBefore(new TokenAuthFilter(loginService, userService), UsernamePasswordAuthenticationFilter.class);
 	}
 	
 	/*Authentication*/

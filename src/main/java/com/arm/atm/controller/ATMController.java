@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.arm.atm.component.WithdrawNotes;
 import com.arm.atm.dto.AtmDTO;
 import com.arm.atm.entity.Account;
-import com.arm.atm.resources.withdraw.Note;
+import com.arm.atm.resource.withdraw.Note;
 import com.arm.atm.service.data.AccountServiceImpl;
 
 import javassist.NotFoundException;

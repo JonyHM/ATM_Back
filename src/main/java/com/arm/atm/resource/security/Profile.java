@@ -1,4 +1,4 @@
-package com.arm.atm.resources.security;
+package com.arm.atm.resource.security;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;

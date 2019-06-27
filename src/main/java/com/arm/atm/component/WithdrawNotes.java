@@ -6,11 +6,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.arm.atm.resources.withdraw.Fifty;
-import com.arm.atm.resources.withdraw.Hundred;
-import com.arm.atm.resources.withdraw.Note;
-import com.arm.atm.resources.withdraw.Ten;
-import com.arm.atm.resources.withdraw.Twenty;
+import com.arm.atm.resource.withdraw.Fifty;
+import com.arm.atm.resource.withdraw.Hundred;
+import com.arm.atm.resource.withdraw.Note;
+import com.arm.atm.resource.withdraw.Ten;
+import com.arm.atm.resource.withdraw.Twenty;
 
 /**
  * Class designed to calculate the number of each note that will be returned to the user 

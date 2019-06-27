@@ -9,6 +9,7 @@ public interface UserService {
 	
 	void create(User user);
 	Optional<?> edit(Long id, User user);
+	User getOne(Long id);
 	Optional<?> getUser(Long id);
 	Optional<?> getUser(String name);
 	Optional<?> getUserByEmail(String email);

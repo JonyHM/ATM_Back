@@ -1,30 +1,27 @@
-package com.arm.atm.resources.security;
+package com.arm.atm.resource.security;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.arm.atm.entity.User;
+import com.arm.atm.entity.Account;
 
-public class UserDS implements UserDetails {
+public class AccountDS implements UserDetails {
 	
 	private static final long serialVersionUID = 578879477375415474L;
 
-	private String email;
+	private Long number;
 	private String password;
-	private List<Profile> profiles;
 	
-	public UserDS(User user) {
-		this.email = user.getEmail();
-		this.password = user.getPassword();
-		this.profiles = user.getProfiles();
+	public AccountDS(Account account) {
+		this.number = account.getNumber();
+		this.password = account.getPassword();
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return profiles;
+		return null;
 	}
 	
 	@Override
@@ -34,7 +31,7 @@ public class UserDS implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return email;
+		return number.toString();
 	}
 
 	@Override
