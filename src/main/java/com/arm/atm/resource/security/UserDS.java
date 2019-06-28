@@ -1,7 +1,7 @@
 package com.arm.atm.resource.security;
 
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,17 +14,17 @@ public class UserDS implements UserDetails {
 
 	private String email;
 	private String password;
-	private List<Profile> profiles;
+	private Profile profile;
 	
 	public UserDS(User user) {
 		this.email = user.getEmail();
 		this.password = user.getPassword();
-		this.profiles = user.getProfiles();
+		this.profile = user.getProfile();
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return profiles;
+		return Arrays.asList(profile);
 	}
 	
 	@Override

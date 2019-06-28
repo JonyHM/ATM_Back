@@ -1,6 +1,7 @@
 package com.arm.atm.filter.security;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -46,7 +47,7 @@ public class TokenAuthFilter extends OncePerRequestFilter {
 		User user = (User)userService.getUser(userId).get();
 		
 		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-				user, null, user.getProfiles());	
+				user, null, Arrays.asList(user.getProfile()));	
 		
 		SecurityContextHolder.getContext()
 			.setAuthentication(authentication);

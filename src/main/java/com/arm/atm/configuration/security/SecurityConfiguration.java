@@ -55,7 +55,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.headers().frameOptions().disable();
 		http.authorizeRequests()
-			.antMatchers("/atm/**").hasRole(AuthorizationLevel.USER.toString())
+			.antMatchers("/atm/**").hasAuthority(AuthorizationLevel.USER.toString())
+			.antMatchers("/account/**").hasAuthority(AuthorizationLevel.ADMIN.toString())
+			.antMatchers("/bank/**").hasAuthority(AuthorizationLevel.ADMIN.toString())
+			.antMatchers("/user/**").hasAuthority(AuthorizationLevel.ADMIN.toString())
 			.antMatchers("/h2-console/**").permitAll()
 			.antMatchers(HttpMethod.POST, "/auth").permitAll()
 			.antMatchers(HttpMethod.POST, "/auth/atm").permitAll()

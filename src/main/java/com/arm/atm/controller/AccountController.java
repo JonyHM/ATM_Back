@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.List;
 
 import javax.transaction.Transactional;
-import javax.transaction.Transactional.TxType;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,7 +86,6 @@ public class AccountController {
 	 */
 	@GetMapping()
 	@Cacheable(value = "accountList")
-	@Transactional(value = TxType.REQUIRED, dontRollbackOn=Exception.class)
 	public ResponseEntity<List<AccountDTO>> listAccounts() {
 		return ResponseEntity.ok(AccountDTO.parse(accountService.getAll()));
 	}
@@ -99,7 +97,6 @@ public class AccountController {
 	 */
 	@GetMapping("/{id}")
 	@Cacheable(value = "singleAccount")
-	@Transactional
 	public ResponseEntity<?> findAccount(@PathVariable Long id) {
 		Object response = accountService.getAccount(id).get();
 		

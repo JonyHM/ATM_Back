@@ -14,12 +14,14 @@
             <column name="NAME" value="Jose" type="VARCHAR(255)"/>
             <column name="EMAIL" value="jose.souza@bol.com" type="VARCHAR(255)"/>
             <column name="PASSWORD" value="$2a$10$c3isgvf6z5DxPlOz6t1BdehJ3LqjC5JQ/JRr.YZ1HsIzRG9cGrdyK" type="VARCHAR(255)"/>
+            <column name="PROFILE_ID" valueNumeric="1" type="BIGINT(19)"/>
         </insert>
         <insert tableName="USER">
             <column name="ID" valueNumeric="2" type="BIGINT(19)"/>
             <column name="NAME" value="Joao" type="VARCHAR(255)"/>
             <column name="EMAIL" value="joao.silva12@hotmail.com" type="VARCHAR(255)"/>
             <column name="PASSWORD" value="$2a$10$q/BPA50jd0qrPLNdZmUDC.x4aELPUoHfVosMhD/C8WH9J/FHNEuEm" type="VARCHAR(255)"/>
+            <column name="PROFILE_ID" valueNumeric="2" type="BIGINT(19)"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

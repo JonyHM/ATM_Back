@@ -5,9 +5,11 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -40,7 +42,8 @@ public class Account implements Serializable {
 	@Column(unique = true)
 	private Long number;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn
 	private User owner;
 	
 	@JsonIgnore
@@ -48,7 +51,8 @@ public class Account implements Serializable {
 	
 	private BigDecimal balance;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn
 	private Bank bank;
 	 	
 }

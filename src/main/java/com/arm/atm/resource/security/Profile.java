@@ -2,13 +2,15 @@ package com.arm.atm.resource.security;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import org.springframework.security.core.GrantedAuthority;
 
@@ -42,7 +44,7 @@ public class Profile implements GrantedAuthority {
 	@Enumerated(EnumType.STRING)
 	private AuthorizationLevel name;
 	
-	@ManyToMany(mappedBy = "profiles")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "profile", fetch = FetchType.LAZY)
 	private List<User> users;
 	
 	@Override

@@ -9,7 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.arm.atm.resource.security.Profile;
@@ -45,11 +46,13 @@ public class User implements Serializable {
 	@JsonIgnore
 	private String password;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner", 
+			targetEntity = Account.class, fetch = FetchType.LAZY)
 	private List<Account> accounts;
 	
-	@ManyToMany(fetch = FetchType.EAGER)	
-	private List<Profile> profiles;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn
+	private Profile profile;
 	
 	public User(String name, String password) {
 		this.name = name;

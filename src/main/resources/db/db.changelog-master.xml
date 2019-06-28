@@ -13,4 +13,5 @@
 	<include file="/db/changelog/db.insert-users.xml"/>
 	<include file="/db/changelog/db.insert-banks.xml"/>
 	<include file="/db/changelog/db.insert-accounts.xml"/>
+	<include file="/db/changelog/db.insert-user_profiles.xml"/>
 </databaseChangeLog>
