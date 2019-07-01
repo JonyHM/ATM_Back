@@ -49,7 +49,7 @@ public class BankController {
 		bankService.create(bank);
 		
 		URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/bank/{id}")
+                .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(bank.getId()).toUri();
 
 		return ResponseEntity.created(location).body(new BankDTO(bank));		
@@ -88,7 +88,7 @@ public class BankController {
 		}
 		
 		URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/bank")
+                .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(bank.getId()).toUri();
 
 		return ResponseEntity.created(location).body(new BankDTO(bank));

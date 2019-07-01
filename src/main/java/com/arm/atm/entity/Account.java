@@ -50,4 +50,8 @@ public class Account implements Serializable {
 	@ManyToOne
 	private Bank bank;
 	 	
+	@Override
+	public String toString() {
+	    return "Account [id=" + id + ", number=" + number + ", owner=" + owner + "]";
+	}
 }

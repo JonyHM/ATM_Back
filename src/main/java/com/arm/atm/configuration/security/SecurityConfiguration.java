@@ -60,7 +60,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.antMatchers("/account/**").hasAuthority(AuthorizationLevel.ADMIN.toString())
 			.antMatchers("/bank/**").hasAuthority(AuthorizationLevel.ADMIN.toString())
 			.antMatchers("/user/**").hasAuthority(AuthorizationLevel.ADMIN.toString())
-			.antMatchers(HttpMethod.GET, "/h2-console/**").permitAll()
+			.antMatchers("/h2-console/**").permitAll()
 			.antMatchers(HttpMethod.POST, "/auth").permitAll()
 			.antMatchers(HttpMethod.POST, "/auth/atm").permitAll()
 			.anyRequest().authenticated()
@@ -79,7 +79,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth
 			.userDetailsService(userDetailsServiceImpl)
-			.passwordEncoder(bCryptPasswordEncoder());
+			.passwordEncoder(new BCryptPasswordEncoder());
 	}
 	
 	@Override

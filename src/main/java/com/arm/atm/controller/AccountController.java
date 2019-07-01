@@ -74,7 +74,7 @@ public class AccountController {
 		accountService.create(newAccount);
 		
 		URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/account/{id}")
+                .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(newAccount.getId()).toUri();
 
 		return ResponseEntity.created(location).body(new AccountDTO(newAccount));
@@ -141,7 +141,7 @@ public class AccountController {
 		}
 		
 		URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/account/{id}")
+                .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(newAccount.getId()).toUri();
 
 		return ResponseEntity.created(location).body(new AccountDTO((Account) response));	

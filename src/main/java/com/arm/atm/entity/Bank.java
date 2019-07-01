@@ -6,7 +6,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,7 +41,12 @@ public class Bank implements Serializable {
 	private String name;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "bank", 
-			targetEntity = Account.class, fetch = FetchType.LAZY)
+			targetEntity = Account.class)
 	private List<Account> accounts;
+	
+	@Override
+	public String toString() {
+	    return "Account [id=" + id + ", name=" + name + "]";
+	}
 	
 }

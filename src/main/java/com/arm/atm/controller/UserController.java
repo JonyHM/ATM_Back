@@ -44,7 +44,7 @@ public class UserController {
 		userService.create(newUser);
 		
 		URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/user/{id}")
+                .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(newUser.getId()).toUri();
 
 		return ResponseEntity.created(location).body(new UserDTO(newUser));
@@ -82,7 +82,7 @@ public class UserController {
 		}
 		
 		URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/user/{id}")
+                .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(newUser.getId()).toUri();
 
 		return ResponseEntity.created(location).body(new UserDTO(newUser));	

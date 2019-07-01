@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.arm.atm.entity.Account;
@@ -25,6 +26,9 @@ public class AccountParser {
 	@Autowired
 	private UserServiceImpl userService;
 	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
 	/**
 	 * Parses a AccountDTO object and a Bank object into a new Account object
 	 * @param account
@@ -43,7 +47,7 @@ public class AccountParser {
 		return Optional.of(accountBuilder
 				.number(account.getAccountNumber())
 				.owner((User) response)
-				.password(account.getPassword())
+				.password(bCryptPasswordEncoder.encode(account.getPassword()))
 				.balance(new BigDecimal(0))
 				.bank(bank)
 				.build());

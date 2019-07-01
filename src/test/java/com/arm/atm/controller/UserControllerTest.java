@@ -26,6 +26,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.arm.atm.configuration.UserServiceImplTestConfiguration;
 import com.arm.atm.entity.User;
 import com.arm.atm.form.UserForm;
+import com.arm.atm.resource.security.AuthorizationLevel;
 import com.arm.atm.service.data.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -168,7 +169,7 @@ public class UserControllerTest {
 	@Transactional
 	public void whenPostAccount_thenStatus201_andGetValueMatchesTheNewOne() throws Exception {
 		/*Creating a new UserForm object for posting*/
-		UserForm newUser = new UserForm("Lilian", "lilian.silva@gmail.com", "$2a$10$OhYO5ri1SyY1a7lwyjiqGuVfFoGbieLx3rz4SJ7jviwVicnRH27D6");
+		UserForm newUser = new UserForm("Lilian", "lilian.silva@gmail.com", "$2a$10$OhYO5ri1SyY1a7lwyjiqGuVfFoGbieLx3rz4SJ7jviwVicnRH27D6", AuthorizationLevel.ADMIN);
 		
 		/*Parsing the new user to string, in order to post it*/
 		ObjectMapper mapper = new ObjectMapper();
