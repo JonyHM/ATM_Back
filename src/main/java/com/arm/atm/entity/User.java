@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -47,10 +46,10 @@ public class User implements Serializable {
 	private String password;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner", 
-			targetEntity = Account.class, fetch = FetchType.LAZY)
+			targetEntity = Account.class)
 	private List<Account> accounts;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn
 	private Profile profile;
 	

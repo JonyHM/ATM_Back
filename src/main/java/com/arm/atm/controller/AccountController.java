@@ -86,6 +86,7 @@ public class AccountController {
 	 */
 	@GetMapping()
 	@Cacheable(value = "accountList")
+	@Transactional
 	public ResponseEntity<List<AccountDTO>> listAccounts() {
 		return ResponseEntity.ok(AccountDTO.parse(accountService.getAll()));
 	}
@@ -97,6 +98,7 @@ public class AccountController {
 	 */
 	@GetMapping("/{id}")
 	@Cacheable(value = "singleAccount")
+	@Transactional
 	public ResponseEntity<?> findAccount(@PathVariable Long id) {
 		Object response = accountService.getAccount(id).get();
 		

@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,7 +41,7 @@ public class Account implements Serializable {
 	@Column(unique = true)
 	private Long number;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn
 	private User owner;
 	
@@ -51,7 +50,7 @@ public class Account implements Serializable {
 	
 	private BigDecimal balance;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn
 	private Bank bank;
 	 	

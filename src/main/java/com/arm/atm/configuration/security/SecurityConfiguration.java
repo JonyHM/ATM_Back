@@ -53,13 +53,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		http.sessionManagement().maximumSessions(5);
 		http.headers().frameOptions().disable();
 		http.authorizeRequests()
 			.antMatchers("/atm/**").hasAuthority(AuthorizationLevel.USER.toString())
 			.antMatchers("/account/**").hasAuthority(AuthorizationLevel.ADMIN.toString())
 			.antMatchers("/bank/**").hasAuthority(AuthorizationLevel.ADMIN.toString())
 			.antMatchers("/user/**").hasAuthority(AuthorizationLevel.ADMIN.toString())
-			.antMatchers("/h2-console/**").permitAll()
+			.antMatchers(HttpMethod.GET, "/h2-console/**").permitAll()
 			.antMatchers(HttpMethod.POST, "/auth").permitAll()
 			.antMatchers(HttpMethod.POST, "/auth/atm").permitAll()
 			.anyRequest().authenticated()
