@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -37,12 +36,10 @@ public class Account implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	
 	@Column(unique = true)
 	private Long number;
 	
 	@ManyToOne
-	@JoinColumn
 	private User owner;
 	
 	@JsonIgnore
@@ -51,7 +48,6 @@ public class Account implements Serializable {
 	private BigDecimal balance;
 	
 	@ManyToOne
-	@JoinColumn
 	private Bank bank;
 	 	
 }

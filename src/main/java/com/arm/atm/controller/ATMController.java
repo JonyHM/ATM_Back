@@ -79,6 +79,7 @@ public class ATMController {
 	 * @return a new ResponseEntity carrying the total balance
 	 */
 	@GetMapping("/balance/{id}")
+	@Transactional
 	public ResponseEntity<?> balance(@PathVariable Long id) {
 		
 		Object response = accountService.getAccount(id).get();

@@ -52,12 +52,14 @@ public class UserController {
 	
 	@GetMapping()
 	@Cacheable(value = "userList")
+	@Transactional
 	public ResponseEntity<List<UserDTO>> listUsers() {
 		return ResponseEntity.ok(UserDTO.parse(userService.getAll()));
 	}
 	
 	@GetMapping("/{id}")
 	@Cacheable(value = "singleUser")
+	@Transactional
 	public ResponseEntity<?> findUser(@PathVariable Long id) {
 		Object response = userService.getUser(id).get();
 		
@@ -69,8 +71,8 @@ public class UserController {
 	}
 	
 	@PutMapping("/{id}")
-	@Transactional
 	@CacheEvict(value = {"userList", "singleUser"}, allEntries = true)
+	@Transactional
 	public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody @Valid UserForm user) {
 		User newUser = userparser.parse(user);	
 		Object response = userService.edit(id, newUser).get();
@@ -87,8 +89,8 @@ public class UserController {
 	}
 	
 	@DeleteMapping("/{id}")
-	@Transactional
 	@CacheEvict(value = {"userList", "singleUser"}, allEntries = true)
+	@Transactional
 	public ResponseEntity<?> deleteUser(@PathVariable Long id) {
 		Object response = userService.delete(id).get();
 		

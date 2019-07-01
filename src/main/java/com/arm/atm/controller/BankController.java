@@ -57,12 +57,14 @@ public class BankController {
 
 	@GetMapping()
 	@Cacheable(value = "bankList")
+	@Transactional
 	public ResponseEntity<List<BankDTO>> listBanks() {
 		return ResponseEntity.ok(BankDTO.parse(bankService.getAll()));
 	}
 	
 	@GetMapping("/{id}")
 	@Cacheable(value = "singleBank")
+	@Transactional
 	public ResponseEntity<?> findBank(@PathVariable Long id) {
 		Object response = bankService.getBank(id).get();
 		
@@ -94,6 +96,7 @@ public class BankController {
 	
 	@DeleteMapping("/{id}")
 	@CacheEvict(value = {"bankList", "singleBank"}, allEntries = true)
+	@Transactional
 	public ResponseEntity<?> deleteBank(@PathVariable Long id) {
 		Object response = bankService.delete(id).get();
 		
