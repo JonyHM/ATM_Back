@@ -1,4 +1,4 @@
-# Interview GSW
+# ATM
 
 Trata-se de uma aplicação que simula a entrega de notas quando um cliente efetua um saque em um caixa eletrônico. 
 
@@ -17,7 +17,6 @@ Os requisitos básicos são os seguintes:
 
 ## Instruções
 
-Você deve baixar o projeto, **criar uma branch nova com o seu nome**, trocar esse readme com as intruções para rodar este projeto e após isso criar um pull request para a master quando tiver finalizado.
 O projeto atualmente não 'builda' e nem compila.
 
 - Fazer o projeto "buildar";
@@ -27,5 +26,3 @@ O projeto atualmente não 'builda' e nem compila.
 - Aplicar melhorias e testes se achar necessário.
 
 Lembre-se da portabilidade da aplicação. Quanto mais fácil for para subir a aplicação para quem for fazer a correção, melhor você será avaliado.
-
-Após baixar e analisar esse projeto, responda com um e-mail o prazo que você levará para concluí-lo.
